@@ -1,0 +1,19 @@
+spring:
+  data:
+    jpa:
+      repositories:
+        enabled: true
+  datasource:
+    hikari:
+      jdbc-url: jdbc:postgresql://localhost:5432/geoxplore
+      driver-class-name: org.postgresql.Driver
+      maximum-pool-size: 10
+      connection-timeout: 300
+      username: postgres
+      password:
+  jpa:
+    database: postgresql
+    properties:
+      hibernate.temp.use_jdbc_metadata_defaults: false
+    hibernate:
+      ddl-auto: validate

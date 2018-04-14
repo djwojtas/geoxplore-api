@@ -28,8 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().and().csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/add").permitAll()
-                    .antMatchers("/read").hasRole("USER")
+                    .antMatchers("/user-management/create-user").permitAll()
+                    .anyRequest().hasRole("USER")
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager(), customUserDetailsService))

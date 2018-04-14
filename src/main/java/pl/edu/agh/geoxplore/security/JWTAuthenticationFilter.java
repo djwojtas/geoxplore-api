@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.edu.agh.geoxplore.exception.MalformedCredentialsException;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
 
 import javax.servlet.FilterChain;
@@ -40,9 +41,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             ApplicationUser applicationUser = new ObjectMapper().readValue(request.getInputStream(), ApplicationUser.class);
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(applicationUser.getUsername(), applicationUser.getPassword()));
         } catch (IOException e) {
-            //throw new AuthenticationException("Bad json"); //TODO
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new MalformedCredentialsException("Unprocessable entity - check json");
         }
     }
 

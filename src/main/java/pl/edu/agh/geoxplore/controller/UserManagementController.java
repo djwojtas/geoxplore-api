@@ -3,7 +3,7 @@ package pl.edu.agh.geoxplore.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import pl.edu.agh.geoxplore.exception.UserExistsException;
+import pl.edu.agh.geoxplore.exception.application.UserExistsException;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 

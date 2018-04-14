@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.exception;
+package pl.edu.agh.geoxplore.exception.application;
 
 import lombok.Getter;
 import lombok.Setter;

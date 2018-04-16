@@ -50,6 +50,7 @@ public class UserManagementController {
                 ret += "\nlong: " + l.getLongitude() +
                         " lat: " + l.getLatitude();
             }
+            ret += "\n\n";
         }
         return ret;
     }

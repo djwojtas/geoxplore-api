@@ -1,26 +1,27 @@
 package pl.edu.agh.geoxplore.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class ApplicationUser {
     @Id
     @NotNull
     @SequenceGenerator(name="users_seq", sequenceName="users_seq")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @JsonIgnore
     private Long id;
 
     @NotNull
@@ -37,4 +38,7 @@ public class ApplicationUser {
     @Column(name = "email")
     @Email(message = "Invalid email")
     private String email;
+
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
+    private List<HomeLocation> home_locations;
 }

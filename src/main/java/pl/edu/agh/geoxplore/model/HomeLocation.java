@@ -30,10 +30,10 @@ public class HomeLocation {
     private ApplicationUser user;
 
     @NotNull
-    private Long longitude;
+    private Double longitude;
 
     @NotNull
-    private Long latitude;
+    private Double latitude;
 
     @NotNull
     private Timestamp date_added;

@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.geoxplore.exception.application.UserExistsException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
+import pl.edu.agh.geoxplore.model.Chest;
 import pl.edu.agh.geoxplore.model.HomeLocation;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.HomeLocationRepository;
-import pl.edu.agh.geoxplore.security.UserPrincipal;
 
-import java.security.Principal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user-management")
@@ -57,12 +58,25 @@ public class UserManagementController {
 
     @PostMapping("/set-home")
     DefaultResponse home(@RequestBody HomeLocation homeLocation) {
-        ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         homeLocation.setDate_added(new Timestamp(System.currentTimeMillis()));
-        homeLocation.setUser(user);
+        homeLocation.setUser(getAuthenticatedUser());
         homeLocationRepository.save(homeLocation);
 
         return new DefaultResponse("success");
+    }
+
+    @GetMapping("/chests")
+    List<Chest> getChests() {
+        //ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<Chest> chests = new ArrayList<>();
+        chests.add(new Chest(50.066245, 19.921969, true));
+        chests.add(new Chest(50.068715, 19.901499, false));
+
+        return chests;
+    }
+
+    private ApplicationUser getAuthenticatedUser() {
+        return (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.interceptor;
+package pl.edu.agh.geoxplore.config.interceptor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

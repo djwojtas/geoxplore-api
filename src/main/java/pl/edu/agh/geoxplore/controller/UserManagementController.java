@@ -114,6 +114,7 @@ public class UserManagementController {
         List<Chest> chests = new ArrayList<>();
         chests.add(new Chest(19.921969, 50.066245, true));
         chests.add(new Chest(19.901499, 50.068715, false));
+        chests.add(new Chest(19.919362, 50.065950, false));
 
         return chests;
     }

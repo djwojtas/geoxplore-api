@@ -9,8 +9,10 @@ import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
 import pl.edu.agh.geoxplore.model.Chest;
 import pl.edu.agh.geoxplore.model.HomeLocation;
+import pl.edu.agh.geoxplore.model.UserStatistics;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.HomeLocationRepository;
+import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ public class UserManagementController {
     HomeLocationRepository homeLocationRepository;
 
     @Autowired
+    UserStatisticsService userStatisticsService;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @PostMapping("/create-user")
@@ -34,6 +39,8 @@ public class UserManagementController {
             throw new UserExistsException();
         }
         applicationUser.setPassword(passwordEncoder.encode(applicationUser.getPassword()));
+        applicationUser.setExperience(0L);
+        applicationUser.setLevel(1L);
         applicationUserRepository.save(applicationUser);
 
         return new DefaultResponse("success");
@@ -76,8 +83,10 @@ public class UserManagementController {
         return chests;
     }
 
-//    @GetMapping("/my-statistics")
-//    UserStatistics
+    @GetMapping("/my-statistics")
+    UserStatistics getMyStatistics() {
+        return userStatisticsService.getUserStatistics(getAuthenticatedUser());
+    }
 
 
     private ApplicationUser getAuthenticatedUser() {

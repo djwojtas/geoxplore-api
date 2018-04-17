@@ -76,6 +76,10 @@ public class UserManagementController {
         return chests;
     }
 
+//    @GetMapping("/my-statistics")
+//    UserStatistics
+
+
     private ApplicationUser getAuthenticatedUser() {
         return (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }

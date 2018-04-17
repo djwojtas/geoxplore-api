@@ -1,5 +1,6 @@
 package pl.edu.agh.geoxplore.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,27 @@ public class ApplicationUser {
     @Email(message = "Invalid email")
     private String email;
 
+    @NotNull
+    private Long level;
+
+    @NotNull
+    private Long experience;
+
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
     private List<HomeLocation> home_locations;
+
+    @JsonIgnore
+    public void setLevel(Long level) {
+        this.level = level;
+    }
+
+    @JsonIgnore
+    public void setExperience(Long experience) {
+        this.experience = experience;
+    }
+
+    @JsonIgnore
+    public void setHome_locations(List<HomeLocation> home_locations) {
+        this.home_locations = home_locations;
+    }
 }

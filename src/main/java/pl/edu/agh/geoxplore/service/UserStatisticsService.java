@@ -20,10 +20,10 @@ public class UserStatisticsService {
     }
 
     private Double calculateLevelProcent(Long exp, Long level) {
-        return ((double) exp)/(calculateNeededExp(level)) * 100;
+        return (((double) exp)/(calculateNeededExp(level))) * 100;
     }
 
     private Long calculateNeededExp(Long level) {
-        return (long) Math.sqrt(Math.pow(level, LEVEL_STEEPNESS)) * LEVEL_EXP;
+        return (long) (Math.sqrt(Math.pow(level, LEVEL_STEEPNESS)) * LEVEL_EXP);
     }
 }

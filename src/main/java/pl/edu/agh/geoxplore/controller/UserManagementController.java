@@ -39,8 +39,8 @@ public class UserManagementController {
             throw new UserExistsException();
         }
         applicationUser.setPassword(passwordEncoder.encode(applicationUser.getPassword()));
-        applicationUser.setExperience(0L);
-        applicationUser.setLevel(1L);
+        applicationUser.setExperience((long) (Math.random()*99)); //TODO remove mock
+        applicationUser.setLevel((long) (Math.random()*2) + 1);
         applicationUserRepository.save(applicationUser);
 
         return new DefaultResponse("success");

@@ -70,8 +70,8 @@ public class UserManagementController {
         //ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<Chest> chests = new ArrayList<>();
-        chests.add(new Chest(50.066245, 19.921969, true));
-        chests.add(new Chest(50.068715, 19.901499, false));
+        chests.add(new Chest(19.921969, 50.066245, true));
+        chests.add(new Chest(19.901499, 50.068715, false));
 
         return chests;
     }

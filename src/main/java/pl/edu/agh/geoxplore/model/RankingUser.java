@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserStatistics {
+public class RankingUser {
     private String username;
-    private Long experience;
     private Long level;
-    private Double toNextLevel;
     private Long openedChests;
 }

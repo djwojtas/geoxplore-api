@@ -6,10 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.geoxplore.exception.application.UserExistsException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
-import pl.edu.agh.geoxplore.model.ApplicationUser;
-import pl.edu.agh.geoxplore.model.Chest;
-import pl.edu.agh.geoxplore.model.HomeLocation;
-import pl.edu.agh.geoxplore.model.UserStatistics;
+import pl.edu.agh.geoxplore.model.*;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.HomeLocationRepository;
 import pl.edu.agh.geoxplore.service.UserStatisticsService;
@@ -86,6 +83,21 @@ public class UserManagementController {
         return ret;
     }
 
+    @GetMapping("/ranking")
+    List<RankingUser> getUserRanking() {
+        List<RankingUser> ranking = new ArrayList<>();
+
+        for(ApplicationUser applicationUser : applicationUserRepository.findAll()) {
+            ranking.add(new RankingUser(
+                    applicationUser.getUsername(),
+                    applicationUser.getLevel(),
+                    (long) (Math.random()*50)
+            ));
+        }
+
+        return ranking;
+    }
+
     @PostMapping("/set-home")
     DefaultResponse home(@RequestBody HomeLocation homeLocation) {
         homeLocation.setDate_added(new Timestamp(System.currentTimeMillis()));
@@ -110,7 +122,6 @@ public class UserManagementController {
     UserStatistics getMyStatistics() {
         return userStatisticsService.getUserStatistics(getAuthenticatedUser());
     }
-
 
     private ApplicationUser getAuthenticatedUser() {
         return (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

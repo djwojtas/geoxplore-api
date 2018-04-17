@@ -39,9 +39,32 @@ public class UserManagementController {
             throw new UserExistsException();
         }
         applicationUser.setPassword(passwordEncoder.encode(applicationUser.getPassword()));
-        applicationUser.setExperience((long) (Math.random()*99)); //TODO remove mock
-        applicationUser.setLevel((long) (Math.random()*2) + 1);
+        long exp = (long) (Math.random()*150);
+        applicationUser.setExperience(exp); //TODO remove mock
+        if(exp < 67) {
+            applicationUser.setLevel(1L);
+        } else {
+            applicationUser.setLevel(2L);
+        }
+
         applicationUserRepository.save(applicationUser);
+
+        return new DefaultResponse("success");
+    }
+
+    @GetMapping("/reroll")
+    DefaultResponse add() throws UserExistsException {
+        ApplicationUser currentUser = getAuthenticatedUser();
+
+        long exp = (long) (Math.random()*150);
+        currentUser.setExperience(exp); //TODO remove mock
+        if(exp < 67) {
+            currentUser.setLevel(1L);
+        } else {
+            currentUser.setLevel(2L);
+        }
+
+        applicationUserRepository.save(currentUser);
 
         return new DefaultResponse("success");
     }

@@ -83,4 +83,14 @@ public class UserController {
         //todo 10 as "magic number"
         return new Chest(-1L, user, randomLong, randomLat, new Date(System.currentTimeMillis()), null, (long) (Math.random()*10));
     }
+
+    @GetMapping("/gethome")
+    String getHomeLocation() {
+        ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
+
+        return "{\n\"longitude\":\"" + homeLocation.getLongitude() + "\"\n\"latitude\":\"" + homeLocation.getLatitude() + "\"\n}";
+    }
 }
+
+

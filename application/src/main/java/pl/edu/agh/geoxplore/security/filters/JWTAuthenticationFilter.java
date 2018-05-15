@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.security;
+package pl.edu.agh.geoxplore.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.edu.agh.geoxplore.exception.MalformedCredentialsException;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
+import pl.edu.agh.geoxplore.security.SecurityConstants;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

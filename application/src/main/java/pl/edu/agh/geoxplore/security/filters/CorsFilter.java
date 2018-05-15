@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.security;
+package pl.edu.agh.geoxplore.security.filters;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

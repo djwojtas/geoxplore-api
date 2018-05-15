@@ -17,6 +17,7 @@ import pl.edu.agh.geoxplore.service.UserStatisticsService;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -33,6 +34,11 @@ public class UserController {
 
     @Autowired
     ChestMapper chestMapper;
+
+    //todo i really REALLY need to move logic to service layer
+    private ApplicationUser getAuthenticatedUser() {
+        return (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
     @PostMapping("/set-home")
     DefaultResponse home(@RequestBody HomeLocation homeLocation) {
@@ -70,10 +76,6 @@ public class UserController {
         return userStatisticsService.getUserStatistics(getAuthenticatedUser());
     }
 
-    private ApplicationUser getAuthenticatedUser() {
-        return (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    }
-
     private Chest generateChest(ApplicationUser user) {
         HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
 
@@ -88,11 +90,21 @@ public class UserController {
         return new Chest(-1L, user, randomLong, randomLat, new Date(System.currentTimeMillis()), null, (long) (Math.random()*10) + 1);
     }
 
-    @GetMapping("/gethome")
+    @PostMapping("/open-chest/{id}")
+    private DefaultResponse openChest(@PathVariable(name = "id") Long id) {
+        Optional<Chest> chest = chestRepository.findById(id);
+        chest.get().setDateFound(new Timestamp(System.currentTimeMillis()));
+        chestRepository.save(chest.get());
+
+        return new DefaultResponse("success");
+    }
+
+    @GetMapping("/get-home")
     String getHomeLocation() {
         ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
 
+        //todo god why
         return "{\n\"longitude\":\"" + homeLocation.getLongitude() + "\",\n\"latitude\":\"" + homeLocation.getLatitude() + "\"\n}";
     }
 }

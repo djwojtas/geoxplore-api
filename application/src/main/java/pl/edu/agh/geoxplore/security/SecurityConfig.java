@@ -12,6 +12,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.SessionManagementFilter;
+import pl.edu.agh.geoxplore.security.filters.CorsFilter;
+import pl.edu.agh.geoxplore.security.filters.JWTAuthenticationFilter;
+import pl.edu.agh.geoxplore.security.filters.JWTAuthorizationFilter;
 import pl.edu.agh.geoxplore.service.CustomUserDetailsService;
 
 @EnableWebSecurity
@@ -31,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/user-management/create-user").permitAll()
-                    //.antMatchers("/user-management/**").permitAll() //for testing
+                    .antMatchers("/user/open-chest/{id}")
+                        .access("hasRole('USER') and @guard.checkUserChestId(authentication,#id)")
                     .anyRequest().hasRole("USER")
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

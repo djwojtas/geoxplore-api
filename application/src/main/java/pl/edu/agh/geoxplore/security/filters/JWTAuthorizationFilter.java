@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.security;
+package pl.edu.agh.geoxplore.security.filters;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
+import pl.edu.agh.geoxplore.security.SecurityConstants;
 import pl.edu.agh.geoxplore.service.CustomUserDetailsService;
 
 import javax.servlet.FilterChain;

@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 @Data
 public class ChestResponse {
+    private Long id;
     private Double longitude;
     private Double latitude;
     private Date dateCreated;

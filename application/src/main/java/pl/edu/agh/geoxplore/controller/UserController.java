@@ -56,6 +56,9 @@ public class UserController {
                 chestRepository.save(newChest);
                 chests.add(newChest);
             }
+            //fixme remove mock for fronts
+            HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
+            new Chest(-1L, user, homeLocation.getLongitude(), homeLocation.getLatitude(), new Date(System.currentTimeMillis()), null, (long) (Math.random()*10));
         }
 
         return chestMapper.ChestToResponse(chests);

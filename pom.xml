@@ -12,4 +12,10 @@
         <module>restapi</module>
         <module>application</module>
     </modules>
+
+    <build>
+        <plugins>
+
+        </plugins>
+    </build>
 </project>

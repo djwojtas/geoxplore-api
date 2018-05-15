@@ -89,7 +89,7 @@ public class UserController {
         ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
 
-        return "{\n\"longitude\":\"" + homeLocation.longitude + "\"\n\"latitude\":\"" + latitude + "\"\n}";
+        return "{\n\"longitude\":\"" + homeLocation.getLongitude() + "\"\n\"latitude\":\"" + homeLocation.getLatitude() + "\"\n}";
     }
 }
 

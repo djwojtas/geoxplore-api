@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 public class HomeLocation {
     @Id
     @NotNull
-    @SequenceGenerator(name="home_locations_seq", sequenceName="home_locations_seq")
+    @SequenceGenerator(name="home_locations_seq", sequenceName="home_locations_seq", allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "home_locations_seq")
     @JsonIgnore
     private Long id;

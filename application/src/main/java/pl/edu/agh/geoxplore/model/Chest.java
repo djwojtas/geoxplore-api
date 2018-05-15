@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 public class Chest {
     @Id
     @NotNull
-    @SequenceGenerator(name="chests_seq", sequenceName="chests_seq")
+    @SequenceGenerator(name="chests_seq", sequenceName="chests_seq", allocationSize=1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chests_seq")
     @JsonIgnore
     private Long id;

@@ -58,7 +58,7 @@ public class UserController {
             }
             //fixme remove mock for fronts
             HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
-            Chest c = new Chest(-1L, user, homeLocation.getLongitude(), homeLocation.getLatitude(), new Date(System.currentTimeMillis()), null, (long) (Math.random()*10));
+            Chest c = new Chest(-1L, user, homeLocation.getLongitude() - 0.00024, homeLocation.getLatitude() - 0.00024, new Date(System.currentTimeMillis()), null, (long) (Math.random()*10));
             chestRepository.save(c);
             chests.add(c);
         }

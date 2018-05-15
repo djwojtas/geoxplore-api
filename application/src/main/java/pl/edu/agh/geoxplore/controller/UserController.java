@@ -16,7 +16,6 @@ import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -86,7 +85,7 @@ public class UserController {
         double randomLat = homeLocation.getLatitude() + (Math.random()*(radius*2) - radius);
 
         //todo 10 as "magic number"
-        return new Chest(-1L, user, randomLong, randomLat, new Date(System.currentTimeMillis()), null, (long) (Math.random()*10));
+        return new Chest(-1L, user, randomLong, randomLat, new Date(System.currentTimeMillis()), null, (long) (Math.random()*10) + 1);
     }
 
     @GetMapping("/gethome")
@@ -94,7 +93,7 @@ public class UserController {
         ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
 
-        return "{\n\"longitude\":\"" + homeLocation.getLongitude() + "\"\n\"latitude\":\"" + homeLocation.getLatitude() + "\"\n}";
+        return "{\n\"longitude\":\"" + homeLocation.getLongitude() + "\",\n\"latitude\":\"" + homeLocation.getLatitude() + "\"\n}";
     }
 }
 

@@ -76,6 +76,7 @@ public class UserController {
         //todo create better algorithm
         double radius = 0.006;
 
+
         double randomLong = homeLocation.getLongitude() + (Math.random()*(radius*2) - radius);
         double randomLat = homeLocation.getLatitude() + (Math.random()*(radius*2) - radius);
 

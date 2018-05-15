@@ -47,7 +47,10 @@ public class ApplicationUser {
     private Long experience;
 
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
-    private List<HomeLocation> home_locations;
+    private List<HomeLocation> homeLocations;
+
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
+    private List<Chest> chests;
 
     @JsonIgnore
     public void setLevel(Long level) {
@@ -60,7 +63,12 @@ public class ApplicationUser {
     }
 
     @JsonIgnore
-    public void setHome_locations(List<HomeLocation> home_locations) {
-        this.home_locations = home_locations;
+    public void setHomeLocations(List<HomeLocation> homeLocations) {
+        this.homeLocations = homeLocations;
+    }
+
+    @JsonIgnore
+    public void setChests(List<Chest> chests) {
+        this.chests = chests;
     }
 }

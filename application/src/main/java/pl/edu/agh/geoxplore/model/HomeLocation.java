@@ -36,5 +36,5 @@ public class HomeLocation {
     private Double latitude;
 
     @NotNull
-    private Timestamp date_added;
+    private Timestamp dateAdded;
 }

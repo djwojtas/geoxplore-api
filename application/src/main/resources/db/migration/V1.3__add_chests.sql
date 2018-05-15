@@ -1,0 +1,10 @@
+CREATE SEQUENCE chests_seq;
+CREATE TABLE chests (
+  id BIGINT NOT NULL PRIMARY KEY,
+  user_id BIGINT NOT NULL REFERENCES users(id),
+  longitude DOUBLE PRECISION NOT NULL,
+  latitude DOUBLE PRECISION NOT NULL,
+  date_created DATE NOT NULL,
+  date_found TIMESTAMP,
+  value BIGINT NOT NULL
+);

@@ -8,12 +8,12 @@ import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
 import pl.edu.agh.geoxplore.model.Chest;
 import pl.edu.agh.geoxplore.model.HomeLocation;
-import pl.edu.agh.geoxplore.rest.UserStatistics;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
 import pl.edu.agh.geoxplore.repository.HomeLocationRepository;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.OpenedChest;
+import pl.edu.agh.geoxplore.rest.UserStatistics;
 import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
 import java.sql.Date;

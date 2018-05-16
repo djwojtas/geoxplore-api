@@ -7,9 +7,9 @@ import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
 import pl.edu.agh.geoxplore.model.Friend;
-import pl.edu.agh.geoxplore.rest.RankingUser;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.FriendRepository;
+import pl.edu.agh.geoxplore.rest.RankingUser;
 import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
 import java.util.ArrayList;

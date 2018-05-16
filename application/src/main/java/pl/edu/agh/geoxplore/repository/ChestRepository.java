@@ -1,8 +1,6 @@
 package pl.edu.agh.geoxplore.repository;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
 import pl.edu.agh.geoxplore.model.Chest;
 

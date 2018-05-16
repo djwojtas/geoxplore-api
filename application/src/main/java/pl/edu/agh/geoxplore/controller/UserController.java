@@ -9,9 +9,11 @@ import pl.edu.agh.geoxplore.model.ApplicationUser;
 import pl.edu.agh.geoxplore.model.Chest;
 import pl.edu.agh.geoxplore.model.HomeLocation;
 import pl.edu.agh.geoxplore.model.UserStatistics;
+import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
 import pl.edu.agh.geoxplore.repository.HomeLocationRepository;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
+import pl.edu.agh.geoxplore.rest.OpenedChest;
 import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
 import java.sql.Date;
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     ChestRepository chestRepository;
+
+    @Autowired
+    ApplicationUserRepository applicationUserRepository;
 
     @Autowired
     ChestMapper chestMapper;
@@ -91,12 +96,24 @@ public class UserController {
     }
 
     @PostMapping("/open-chest/{id}")
-    private DefaultResponse openChest(@PathVariable(name = "id") Long id) {
+    private OpenedChest openChest(@PathVariable(name = "id") Long id) {
         Optional<Chest> chest = chestRepository.findById(id);
         chest.get().setDateFound(new Timestamp(System.currentTimeMillis()));
-        chestRepository.save(chest.get());
+        chestRepository.save(chest.get()); //todo make sure that chest can only by opened once
 
-        return new DefaultResponse("success");
+        ApplicationUser user = getAuthenticatedUser();
+
+        //todo move generating exp somewhere else?
+        Long gainedExp = chest.get().getValue() * 10;
+        user.setExperience(user.getExperience() + gainedExp);
+        user.setLevel(userStatisticsService.getLevelFromExp(user.getExperience()));
+
+        applicationUserRepository.save(user);
+
+        OpenedChest response = new OpenedChest();
+        response.setExpGained(gainedExp);
+
+        return response;
     }
 
     @GetMapping("/get-home")

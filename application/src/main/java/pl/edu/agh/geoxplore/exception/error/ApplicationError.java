@@ -9,6 +9,7 @@ public enum ApplicationError {
     //1xxx - user related errors
     USERNAME_EXISTS("1000"),
     VALIDATION_ERROR("1001"),
+    FRIEND_EXISTS("1002"),
     //4xxx - various errors
     MALFORMED_REQUEST("4000");
 

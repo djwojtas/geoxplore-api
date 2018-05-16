@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.model;
+package pl.edu.agh.geoxplore.rest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

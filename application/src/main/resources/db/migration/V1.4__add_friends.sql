@@ -1,0 +1,6 @@
+CREATE SEQUENCE friends_seq;
+CREATE TABLE friends (
+  id BIGINT NOT NULL PRIMARY KEY,
+  user_id BIGINT NOT NULL REFERENCES users(id),
+  friend_id BIGINT NOT NULL REFERENCES users(id)
+);

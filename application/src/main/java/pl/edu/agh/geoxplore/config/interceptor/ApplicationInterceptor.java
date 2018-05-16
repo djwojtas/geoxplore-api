@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
 import pl.edu.agh.geoxplore.exception.application.MalformedRequestException;
 import pl.edu.agh.geoxplore.exception.application.UserExistsException;
 import pl.edu.agh.geoxplore.exception.error.ApplicationError;
@@ -12,6 +13,13 @@ import pl.edu.agh.geoxplore.message.ErrorResponse;
 
 @ControllerAdvice
 public class ApplicationInterceptor {
+    @ExceptionHandler(FriendExistsException.class)
+    public ResponseEntity<ErrorResponse> handleFriendExistsException() {
+        return new ResponseEntity<>(
+                new ErrorResponse("Friend already exists", ApplicationError.FRIEND_EXISTS.getErrorCode()),
+                HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(UserExistsException.class)
     public ResponseEntity<ErrorResponse> handleUserExistsException() {
         return new ResponseEntity<>(

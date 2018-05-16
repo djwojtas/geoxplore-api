@@ -52,6 +52,12 @@ public class ApplicationUser {
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
     private List<Chest> chests;
 
+    @OneToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="user")
+    private List<Friend> haveFriends;
+
+    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="friend")
+    private List<Friend> isFriend;
+
     @JsonIgnore
     public void setLevel(Long level) {
         this.level = level;

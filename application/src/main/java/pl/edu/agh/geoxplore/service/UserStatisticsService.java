@@ -2,7 +2,7 @@ package pl.edu.agh.geoxplore.service;
 
 import org.springframework.stereotype.Service;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
-import pl.edu.agh.geoxplore.model.UserStatistics;
+import pl.edu.agh.geoxplore.rest.UserStatistics;
 
 @Service
 public class UserStatisticsService {

@@ -3,6 +3,7 @@ package pl.edu.agh.geoxplore.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
 import pl.edu.agh.geoxplore.mapper.ChestMapper;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.model.ApplicationUser;
@@ -92,7 +93,26 @@ public class UserController {
         double randomLat = homeLocation.getLatitude() + (Math.random()*(radius*2) - radius);
 
         //todo 10 as "magic number"
-        return new Chest(-1L, user, randomLong, randomLat, new Date(System.currentTimeMillis()), null, (long) (Math.random()*10) + 1);
+        return new Chest(-1L, user, randomLong, randomLat, new Date(System.currentTimeMillis()), null, getChestLevel());
+    }
+
+    public long calculateExpFromChest(Chest chest) {
+        return chest.getValue() * 10;
+    }
+
+    private long getChestLevel() {
+        double roll = Math.random();
+        //todo fix magic numbers to non-mock
+        //0.6 0.9 0.975
+        if(roll < 0.25) {
+            return 1;
+        } else if(roll < 0.5) {
+            return 2;
+        } else if(roll < 0.75) {
+            return 3;
+        } else {
+            return 4;
+        }
     }
 
     @PostMapping("/open-chest/{id}")
@@ -104,7 +124,7 @@ public class UserController {
         ApplicationUser user = getAuthenticatedUser();
 
         //todo move generating exp somewhere else?
-        Long gainedExp = chest.get().getValue() * 10;
+        Long gainedExp = calculateExpFromChest(chest.get());
         user.setExperience(user.getExperience() + gainedExp);
         user.setLevel(userStatisticsService.getLevelFromExp(user.getExperience()));
 
@@ -117,12 +137,14 @@ public class UserController {
     }
 
     @GetMapping("/get-home")
-    String getHomeLocation() {
+    String getHomeLocation() throws HomeLocationNotSetException {
         ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
+        Optional<HomeLocation> homeLocation = Optional.ofNullable(homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user));
+
+        if(!homeLocation.isPresent()) throw new HomeLocationNotSetException();
 
         //todo god why
-        return "{\n\"longitude\":\"" + homeLocation.getLongitude() + "\",\n\"latitude\":\"" + homeLocation.getLatitude() + "\"\n}";
+        return "{\n\"longitude\":\"" + homeLocation.get().getLongitude() + "\",\n\"latitude\":\"" + homeLocation.get().getLatitude() + "\"\n}";
     }
 }
 

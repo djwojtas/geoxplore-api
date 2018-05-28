@@ -6,6 +6,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
+import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
 import pl.edu.agh.geoxplore.exception.application.MalformedRequestException;
 import pl.edu.agh.geoxplore.exception.application.UserExistsException;
 import pl.edu.agh.geoxplore.exception.error.ApplicationError;
@@ -13,6 +14,13 @@ import pl.edu.agh.geoxplore.message.ErrorResponse;
 
 @ControllerAdvice
 public class ApplicationInterceptor {
+    @ExceptionHandler(HomeLocationNotSetException.class)
+    public ResponseEntity<ErrorResponse> handleHomeLocationNotSetException() {
+        return new ResponseEntity<>(
+                new ErrorResponse("Home location not set", ApplicationError.HOME_LOCATION_NOT_SET.getErrorCode()),
+                HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(FriendExistsException.class)
     public ResponseEntity<ErrorResponse> handleFriendExistsException() {
         return new ResponseEntity<>(

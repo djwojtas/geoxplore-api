@@ -13,4 +13,5 @@ public class ChestResponse {
     private Date dateCreated;
     private Timestamp dateFound;
     private Boolean opened;
+    private Long value;
 }

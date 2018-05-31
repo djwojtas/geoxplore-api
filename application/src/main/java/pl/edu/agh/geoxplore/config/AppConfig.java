@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages={"pl.edu.agh.geoxplore"})
 @EnableJpaRepositories("pl.edu.agh.geoxplore.repository")
-@EntityScan(basePackages="pl.edu.agh.geoxplore.model")
+@EntityScan(basePackages="pl.edu.agh.geoxplore.entity")
 public class AppConfig {
     public static void main(String[] args) {
         SpringApplication.run(AppConfig.class, args);

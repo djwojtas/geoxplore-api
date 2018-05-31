@@ -3,8 +3,8 @@ package pl.edu.agh.geoxplore.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import pl.edu.agh.geoxplore.model.ApplicationUser;
-import pl.edu.agh.geoxplore.model.Chest;
+import pl.edu.agh.geoxplore.entity.ApplicationUser;
+import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
 

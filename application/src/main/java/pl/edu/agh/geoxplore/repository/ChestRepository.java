@@ -1,8 +1,8 @@
 package pl.edu.agh.geoxplore.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import pl.edu.agh.geoxplore.model.ApplicationUser;
-import pl.edu.agh.geoxplore.model.Chest;
+import pl.edu.agh.geoxplore.entity.ApplicationUser;
+import pl.edu.agh.geoxplore.entity.Chest;
 
 import java.sql.Date;
 import java.util.List;

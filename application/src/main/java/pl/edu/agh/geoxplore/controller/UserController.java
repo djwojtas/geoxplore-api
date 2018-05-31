@@ -6,15 +6,17 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
 import pl.edu.agh.geoxplore.mapper.ChestMapper;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
-import pl.edu.agh.geoxplore.model.ApplicationUser;
-import pl.edu.agh.geoxplore.model.Chest;
-import pl.edu.agh.geoxplore.model.HomeLocation;
+import pl.edu.agh.geoxplore.entity.ApplicationUser;
+import pl.edu.agh.geoxplore.entity.Chest;
+import pl.edu.agh.geoxplore.entity.HomeLocation;
+import pl.edu.agh.geoxplore.model.Point;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
 import pl.edu.agh.geoxplore.repository.HomeLocationRepository;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.OpenedChest;
 import pl.edu.agh.geoxplore.rest.UserStatistics;
+import pl.edu.agh.geoxplore.service.ChestService;
 import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
 import java.sql.Date;
@@ -41,6 +43,9 @@ public class UserController {
     @Autowired
     ChestMapper chestMapper;
 
+    @Autowired
+    ChestService chestService;
+
     //todo i really REALLY need to move logic to service layer
     private ApplicationUser getAuthenticatedUser() {
         return (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -61,13 +66,15 @@ public class UserController {
         List<Chest> chests = chestRepository.findByUserAndDateCreated(user, new Date(System.currentTimeMillis()));
 
         if(chests.size() == 0) {
-            Chest newChest;
-            for (int i = 0; i < 3; i++) {
-                newChest = generateChest(user);
-                chestRepository.save(newChest);
+            HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
+            List<Point> randomPoints = chestService.getRandomPointList(3, homeLocation.getLatitude(), homeLocation.getLongitude(), 60, 1);
+
+            Chest randomChest;
+            for (Point p : randomPoints) {
+                randomChest = new Chest(-1L, user, p.getLongitude(), p.getLatitude(), new Date(System.currentTimeMillis()), null, getChestLevel());
+                chestRepository.save(randomChest);
             }
             //fixme remove mock for fronts
-            HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
             Chest c = new Chest(-1L, user, homeLocation.getLongitude() - 0.00024, homeLocation.getLatitude() - 0.00024, new Date(System.currentTimeMillis()), null, (long) (Math.random()*10));
             chestRepository.save(c);
         }
@@ -80,20 +87,6 @@ public class UserController {
     @GetMapping("/my-statistics")
     UserStatistics getMyStatistics() {
         return userStatisticsService.getUserStatistics(getAuthenticatedUser());
-    }
-
-    private Chest generateChest(ApplicationUser user) {
-        HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(user);
-
-        //todo create better algorithm
-        double radius = 0.006;
-
-
-        double randomLong = homeLocation.getLongitude() + (Math.random()*(radius*2) - radius);
-        double randomLat = homeLocation.getLatitude() + (Math.random()*(radius*2) - radius);
-
-        //todo 10 as "magic number"
-        return new Chest(-1L, user, randomLong, randomLat, new Date(System.currentTimeMillis()), null, getChestLevel());
     }
 
     public long calculateExpFromChest(Chest chest) {

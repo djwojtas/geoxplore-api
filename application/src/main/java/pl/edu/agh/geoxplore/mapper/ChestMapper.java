@@ -3,7 +3,7 @@ package pl.edu.agh.geoxplore.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import pl.edu.agh.geoxplore.model.Chest;
+import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
 
 import java.sql.Timestamp;

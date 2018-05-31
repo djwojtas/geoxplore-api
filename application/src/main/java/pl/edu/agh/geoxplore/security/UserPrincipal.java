@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.edu.agh.geoxplore.model.ApplicationUser;
+import pl.edu.agh.geoxplore.entity.ApplicationUser;
 
 import java.util.Collection;
 import java.util.Collections;

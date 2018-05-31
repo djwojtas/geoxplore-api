@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.model;
+package pl.edu.agh.geoxplore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

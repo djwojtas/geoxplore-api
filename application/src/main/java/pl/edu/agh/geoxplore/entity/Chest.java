@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.model;
+package pl.edu.agh.geoxplore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -8,19 +8,20 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "home_locations")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class HomeLocation {
+@Entity
+@Table(name = "chests")
+public class Chest {
     @Id
     @NotNull
-    @SequenceGenerator(name="home_locations_seq", sequenceName="home_locations_seq", allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "home_locations_seq")
+    @SequenceGenerator(name="chests_seq", sequenceName="chests_seq", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chests_seq")
     @JsonIgnore
     private Long id;
 
@@ -36,5 +37,10 @@ public class HomeLocation {
     private Double latitude;
 
     @NotNull
-    private Timestamp dateAdded;
+    private Date dateCreated;
+
+    private Timestamp dateFound;
+
+    @NotNull
+    private Long value;
 }

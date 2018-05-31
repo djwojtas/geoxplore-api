@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.model;
+package pl.edu.agh.geoxplore.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

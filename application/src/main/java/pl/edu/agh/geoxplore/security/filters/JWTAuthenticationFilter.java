@@ -13,7 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pl.edu.agh.geoxplore.exception.MalformedCredentialsException;
-import pl.edu.agh.geoxplore.model.ApplicationUser;
+import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.security.SecurityConstants;
 
 import javax.servlet.FilterChain;

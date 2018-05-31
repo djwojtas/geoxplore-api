@@ -1,9 +1,18 @@
 package pl.edu.agh.geoxplore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
 import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
+import pl.edu.agh.geoxplore.exception.application.UserExistsException;
 import pl.edu.agh.geoxplore.mapper.ChestMapper;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
@@ -19,6 +28,11 @@ import pl.edu.agh.geoxplore.rest.UserStatistics;
 import pl.edu.agh.geoxplore.service.ChestService;
 import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -129,6 +143,7 @@ public class UserController {
         return response;
     }
 
+    //todo change mappings to actually rest wihout get- set-
     @GetMapping("/get-home")
     String getHomeLocation() throws HomeLocationNotSetException {
         ApplicationUser user = (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -138,6 +153,33 @@ public class UserController {
 
         //todo god why
         return "{\n\"longitude\":\"" + homeLocation.get().getLongitude() + "\",\n\"latitude\":\"" + homeLocation.get().getLatitude() + "\"\n}";
+    }
+
+    //todo not much security here
+    @PostMapping("/avatar")
+    public String avatarUpload(@RequestParam("file") MultipartFile file) throws IOException {
+        ApplicationUser user = getAuthenticatedUser();
+        File newFile = new File("./avatars/" + user.getUsername() + ".png");
+        newFile.getParentFile().mkdirs();
+        FileCopyUtils.copy(file.getBytes(), newFile);
+        return "success";
+    }
+
+    @GetMapping(
+            value =  "/avatar",
+            produces = MediaType.IMAGE_PNG_VALUE
+    )
+    public ResponseEntity<Resource> avatarDownload() throws MalformedURLException, AvatarNotSetException {
+        ApplicationUser user = getAuthenticatedUser();
+
+        Path filePath = Paths.get("./avatars/" + user.getUsername() + ".png");
+        Resource resource = new UrlResource(filePath.toUri());
+        if(resource.exists()) {
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+        } else {
+            throw new AvatarNotSetException();
+        }
     }
 }
 

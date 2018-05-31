@@ -11,6 +11,7 @@ public enum ApplicationError {
     VALIDATION_ERROR("1001"),
     FRIEND_EXISTS("1002"),
     HOME_LOCATION_NOT_SET("1003"),
+    AVATAR_NOT_SET("1004"),
     //4xxx - various errors
     MALFORMED_REQUEST("4000");
 

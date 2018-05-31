@@ -1,19 +1,29 @@
 package pl.edu.agh.geoxplore.config.interceptor;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
-import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
-import pl.edu.agh.geoxplore.exception.application.MalformedRequestException;
-import pl.edu.agh.geoxplore.exception.application.UserExistsException;
+import org.springframework.web.bind.annotation.RequestMapping;
+import pl.edu.agh.geoxplore.exception.application.*;
 import pl.edu.agh.geoxplore.exception.error.ApplicationError;
 import pl.edu.agh.geoxplore.message.ErrorResponse;
 
 @ControllerAdvice
 public class ApplicationInterceptor {
+    @ExceptionHandler(AvatarNotSetException.class)
+    public ResponseEntity<ErrorResponse> handleAvatarNotSetException() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(
+                new ErrorResponse("Avatar not set, please upload it first", ApplicationError.AVATAR_NOT_SET.getErrorCode()),
+                headers,
+                HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(HomeLocationNotSetException.class)
     public ResponseEntity<ErrorResponse> handleHomeLocationNotSetException() {
         return new ResponseEntity<>(
@@ -31,8 +41,8 @@ public class ApplicationInterceptor {
     @ExceptionHandler(UserExistsException.class)
     public ResponseEntity<ErrorResponse> handleUserExistsException() {
         return new ResponseEntity<>(
-                        new ErrorResponse("Username already exists", ApplicationError.USERNAME_EXISTS.getErrorCode()),
-                        HttpStatus.CONFLICT);
+                new ErrorResponse("Username already exists", ApplicationError.USERNAME_EXISTS.getErrorCode()),
+                HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({MalformedRequestException.class, HttpMessageNotReadableException.class})

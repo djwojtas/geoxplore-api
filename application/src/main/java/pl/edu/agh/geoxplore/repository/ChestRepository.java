@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface ChestRepository extends CrudRepository<Chest, Long> {
-    List<Chest> findByUserAndDateCreated(ApplicationUser emailAddress, Date date);
+    List<Chest> findByUserAndDateCreated(ApplicationUser user, Date date);
+    List<Chest> findByUserAndDateFoundIsNotNull(ApplicationUser user); //TODO unused? may be used instead of EAGER fetch type for chests in applicationuser
     Chest findFirstByUserAndId(ApplicationUser user, Long id);
 }

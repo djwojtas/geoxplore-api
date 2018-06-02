@@ -10,14 +10,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
-import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
-import pl.edu.agh.geoxplore.exception.application.UserExistsException;
-import pl.edu.agh.geoxplore.mapper.ChestMapper;
-import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.entity.HomeLocation;
+import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
+import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
+import pl.edu.agh.geoxplore.mapper.ChestMapper;
+import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.model.Point;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
@@ -89,7 +88,7 @@ public class UserController {
                 chestRepository.save(randomChest);
             }
             //fixme remove mock for fronts
-            Chest c = new Chest(-1L, user, homeLocation.getLongitude() - 0.00024, homeLocation.getLatitude() - 0.00024, new Date(System.currentTimeMillis()), null, (long) (Math.random()*10));
+            Chest c = new Chest(-1L, user, homeLocation.getLongitude() - 0.00024, homeLocation.getLatitude() - 0.00024, new Date(System.currentTimeMillis()), null, getChestLevel());
             chestRepository.save(c);
         }
 

@@ -11,4 +11,5 @@ public class RankingUser {
     private String username;
     private Long level;
     private Long openedChests;
+    private Long lastWeekChests;
 }

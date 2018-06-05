@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface ChestRepository extends CrudRepository<Chest, Long> {
     List<Chest> findByUserAndDateCreated(ApplicationUser user, Date date);
-    List<Chest> findByUserAndDateFoundIsNotNull(ApplicationUser user); //TODO unused? may be used instead of EAGER fetch type for chests in applicationuser
+    List<Chest> findByUserAndDateFoundIsNotNull(ApplicationUser user);
     Chest findFirstByUserAndId(ApplicationUser user, Long id);
 }

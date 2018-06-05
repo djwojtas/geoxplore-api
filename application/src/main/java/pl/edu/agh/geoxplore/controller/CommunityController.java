@@ -1,12 +1,21 @@
 package pl.edu.agh.geoxplore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.entity.Friend;
+import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
 import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
+import pl.edu.agh.geoxplore.exception.application.UserDoesntExistsException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
@@ -14,6 +23,11 @@ import pl.edu.agh.geoxplore.repository.FriendRepository;
 import pl.edu.agh.geoxplore.rest.RankingUser;
 import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -102,5 +116,22 @@ public class CommunityController {
 
     private ApplicationUser getAuthenticatedUser() {
         return (ApplicationUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    @GetMapping(
+            value =  "/avatar/{username}",
+            produces = MediaType.IMAGE_PNG_VALUE
+    )
+    public ResponseEntity<Resource> avatarDownload(@PathVariable("username") String username) throws UserDoesntExistsException, AvatarNotSetException, MalformedURLException {
+        if(applicationUserRepository.findByUsername(username) != null) {
+            Path filePath = Paths.get("./avatars/" + username + ".png");
+            Resource resource = new UrlResource(filePath.toUri());
+            if(resource.exists()) {
+                return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+            } else {
+                throw new AvatarNotSetException();
+            }
+        } else throw new UserDoesntExistsException();
     }
 }

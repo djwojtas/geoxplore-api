@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestMapping;
 import pl.edu.agh.geoxplore.exception.application.*;
 import pl.edu.agh.geoxplore.exception.error.ApplicationError;
 import pl.edu.agh.geoxplore.message.ErrorResponse;
@@ -20,6 +19,16 @@ public class ApplicationInterceptor {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(
                 new ErrorResponse("Avatar not set, please upload it first", ApplicationError.AVATAR_NOT_SET.getErrorCode()),
+                headers,
+                HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserDoesntExistsException.class)
+    public ResponseEntity<ErrorResponse> handleUserDoesntExistsException() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(
+                new ErrorResponse("User with given username does not exist", ApplicationError.USER_DOESNT_EXIST.getErrorCode()),
                 headers,
                 HttpStatus.NOT_FOUND);
     }

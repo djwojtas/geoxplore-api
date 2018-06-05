@@ -156,12 +156,12 @@ public class UserController {
 
     //todo not much security here
     @PostMapping("/avatar")
-    public String avatarUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public DefaultResponse avatarUpload(@RequestParam("file") MultipartFile file) throws IOException {
         ApplicationUser user = getAuthenticatedUser();
         File newFile = new File("./avatars/" + user.getUsername() + ".png");
         newFile.getParentFile().mkdirs();
         FileCopyUtils.copy(file.getBytes(), newFile);
-        return "success";
+        return new DefaultResponse("success");
     }
 
     @GetMapping(

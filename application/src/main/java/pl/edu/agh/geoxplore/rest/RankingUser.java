@@ -12,4 +12,5 @@ public class RankingUser {
     private Long level;
     private Long openedChests;
     private Long lastWeekChests;
+    private Long place;
 }

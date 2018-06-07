@@ -51,6 +51,9 @@ public class CommunityController {
     List<RankingUser> getUserRanking(Pageable pageable) {
         List<RankingUser> ranking = new ArrayList<>();
 
+        int startingPlace = pageable.getPageNumber() * pageable.getPageSize();
+        int currentPlace = 1;
+
         for(ApplicationUser applicationUser :
                 applicationUserRepository.findAll(pageable)) {
 
@@ -62,8 +65,11 @@ public class CommunityController {
                     (long) userChests.size(),
                     userChests.stream()
                             .filter(c -> c.getDateFound().after(
-                                    Timestamp.valueOf(LocalDate.now().minusDays(7).atStartOfDay()))).count()
+                                    Timestamp.valueOf(LocalDate.now().minusDays(7).atStartOfDay()))).count(),
+                    (long) startingPlace + currentPlace
             ));
+
+            ++currentPlace;
         }
 
         return ranking;

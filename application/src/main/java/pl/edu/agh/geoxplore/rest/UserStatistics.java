@@ -12,10 +12,6 @@ public class UserStatistics {
     private Long experience;
     private Long level;
     private Double toNextLevel;
-    private Long openedOverallChests;
-    private Long openedOverallCommonChests;
-    private Long openedOverallRareChests;
-    private Long openedOverallEpicChests;
-    private Long openedOverallLegendaryChests;
-    private Long openedLastWeekChests;
+    private Long friends;
+    private ChestStats chestStats;
 }

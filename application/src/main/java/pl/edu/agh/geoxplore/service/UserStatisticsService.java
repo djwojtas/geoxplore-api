@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
+import pl.edu.agh.geoxplore.repository.FriendRepository;
+import pl.edu.agh.geoxplore.rest.ChestStats;
 import pl.edu.agh.geoxplore.rest.UserStatistics;
 
 import java.sql.Timestamp;
@@ -13,6 +15,9 @@ import java.util.List;
 
 @Service
 public class UserStatisticsService {
+    @Autowired
+    FriendRepository friendRepository;
+
     @Autowired
     ChestRepository chestRepository;
 
@@ -27,24 +32,29 @@ public class UserStatisticsService {
         userStatistics.setExperience(applicationUser.getExperience());
         userStatistics.setLevel(applicationUser.getLevel());
         userStatistics.setToNextLevel(calculateLevelProcent(applicationUser.getExperience(), applicationUser.getLevel()));
-        userStatistics.setOpenedOverallChests((long) chests.size());
-        userStatistics.setOpenedOverallCommonChests(
+        userStatistics.setFriends((long) applicationUser.getHaveFriends().size());
+
+        ChestStats chestStats = new ChestStats();
+        chestStats.setOpenedOverallChests((long) chests.size());
+        chestStats.setOpenedOverallCommonChests(
                 chests.stream().filter(c -> c.getValue().equals(1L)).count()
         );
-        userStatistics.setOpenedOverallRareChests(
+        chestStats.setOpenedOverallRareChests(
                 chests.stream().filter(c -> c.getValue().equals(2L)).count()
         );
-        userStatistics.setOpenedOverallEpicChests(
+        chestStats.setOpenedOverallEpicChests(
                 chests.stream().filter(c -> c.getValue().equals(3L)).count()
         );
-        userStatistics.setOpenedOverallLegendaryChests(
+        chestStats.setOpenedOverallLegendaryChests(
                 chests.stream().filter(c -> c.getValue().equals(4L)).count()
         );
-        userStatistics.setOpenedLastWeekChests(
+        chestStats.setOpenedLastWeekChests(
                 chests.stream().filter(c -> c.getDateFound().after(
                         Timestamp.valueOf(LocalDate.now().minusDays(7).atStartOfDay()))
                 ).count()
         );
+
+        userStatistics.setChestStats(chestStats);
 
         return userStatistics;
     }

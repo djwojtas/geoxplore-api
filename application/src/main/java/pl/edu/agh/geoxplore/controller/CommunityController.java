@@ -3,13 +3,12 @@ package pl.edu.agh.geoxplore.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.entity.Friend;
@@ -23,8 +22,6 @@ import pl.edu.agh.geoxplore.repository.FriendRepository;
 import pl.edu.agh.geoxplore.rest.RankingUser;
 import pl.edu.agh.geoxplore.service.UserStatisticsService;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,10 +48,12 @@ public class CommunityController {
     ChestRepository chestRepository;
 
     @GetMapping("/ranking")
-    List<RankingUser> getUserRanking() {
+    List<RankingUser> getUserRanking(Pageable pageable) {
         List<RankingUser> ranking = new ArrayList<>();
 
-        for(ApplicationUser applicationUser : applicationUserRepository.findAll()) {
+        for(ApplicationUser applicationUser :
+                applicationUserRepository.findAll(pageable)) {
+
             List<Chest> userChests = chestRepository.findByUserAndDateFoundIsNotNull(applicationUser);
 
             ranking.add(new RankingUser(

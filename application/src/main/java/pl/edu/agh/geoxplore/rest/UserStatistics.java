@@ -13,5 +13,6 @@ public class UserStatistics {
     private Long level;
     private Double toNextLevel;
     private Long friends;
+    private Long openedOverallChests;
     private ChestStats chestStats;
 }

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChestStats {
-    private Long openedOverallChests;
     private Long openedOverallCommonChests;
     private Long openedOverallRareChests;
     private Long openedOverallEpicChests;

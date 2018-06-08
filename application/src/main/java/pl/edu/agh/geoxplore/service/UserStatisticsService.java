@@ -33,9 +33,9 @@ public class UserStatisticsService {
         userStatistics.setLevel(applicationUser.getLevel());
         userStatistics.setToNextLevel(calculateLevelProcent(applicationUser.getExperience(), applicationUser.getLevel()));
         userStatistics.setFriends((long) applicationUser.getHaveFriends().size());
+        userStatistics.setOpenedOverallChests((long) chests.size());
 
         ChestStats chestStats = new ChestStats();
-        chestStats.setOpenedOverallChests((long) chests.size());
         chestStats.setOpenedOverallCommonChests(
                 chests.stream().filter(c -> c.getValue().equals(1L)).count()
         );
@@ -55,7 +55,6 @@ public class UserStatisticsService {
         );
 
         userStatistics.setChestStats(chestStats);
-
         return userStatistics;
     }
 

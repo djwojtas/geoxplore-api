@@ -1,25 +1,33 @@
 package pl.edu.agh.geoxplore.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
+import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
 import pl.edu.agh.geoxplore.repository.FriendRepository;
 import pl.edu.agh.geoxplore.rest.ChestStats;
+import pl.edu.agh.geoxplore.rest.RankingUser;
 import pl.edu.agh.geoxplore.rest.UserStatistics;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserStatisticsService {
+
     @Autowired
     FriendRepository friendRepository;
 
     @Autowired
     ChestRepository chestRepository;
+
+    @Autowired
+    ApplicationUserRepository applicationUserRepository;
 
     private static final double LEVEL_STEEPNESS = 1.5;
     private static final long LEVEL_EXP = 100;
@@ -69,5 +77,36 @@ public class UserStatisticsService {
 
     public Long calculateNeededExp(Long level) {
         return (long) (Math.sqrt(Math.pow(level, LEVEL_STEEPNESS)) * LEVEL_EXP) - LEVEL_EXP;
+    }
+
+    public long calculateExpFromChest(Chest chest) {
+        return chest.getValue() * 10;
+    }
+
+    public List<RankingUser> getRankingSortedAndPaged(Pageable pageable) {
+        List<RankingUser> ranking = new ArrayList<>();
+
+        int startingPlace = pageable.getPageNumber() * pageable.getPageSize();
+        int currentPlace = 1;
+
+        for(ApplicationUser applicationUser :
+                applicationUserRepository.findAll(pageable)) {
+
+            List<Chest> userChests = chestRepository.findByUserAndDateFoundIsNotNull(applicationUser);
+
+            ranking.add(new RankingUser(
+                    applicationUser.getUsername(),
+                    applicationUser.getLevel(),
+                    (long) userChests.size(),
+                    userChests.stream()
+                            .filter(c -> c.getDateFound().after(
+                                    Timestamp.valueOf(LocalDate.now().minusDays(7).atStartOfDay()))).count(),
+                    (long) startingPlace + currentPlace
+            ));
+
+            ++currentPlace;
+        }
+
+        return ranking;
     }
 }

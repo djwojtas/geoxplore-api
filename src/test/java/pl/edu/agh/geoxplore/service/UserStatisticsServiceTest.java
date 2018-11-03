@@ -10,11 +10,13 @@ class UserStatisticsServiceTest {
     UserStatisticsService service = new UserStatisticsService();
 
     @Test
-    void getLevelFromExp() {
+    void shouldExpectMoreExpForHigherLevel() {
         long exp = 1000;
         long lvl = service.getLevelFromExp(exp);
-        long backExp = service.calculateNeededExp(lvl);
-        long backExpHigher = service.calculateNeededExp(lvl+1);
-        assertTrue(backExp <= exp && exp <= backExpHigher);
+
+        long lowerLevelExp = service.calculateNeededExp(lvl);
+        long higherLevelExp = service.calculateNeededExp(lvl+1);
+
+        assertTrue(lowerLevelExp <= exp && exp <= higherLevelExp);
     }
 }

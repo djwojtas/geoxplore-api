@@ -12,9 +12,10 @@ import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
 import pl.edu.agh.geoxplore.exception.application.UserDoesntExistsException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.rest.RankingUser;
-import pl.edu.agh.geoxplore.service.impl.AuthenticationService;
-import pl.edu.agh.geoxplore.service.impl.AvatarService;
-import pl.edu.agh.geoxplore.service.impl.FriendService;
+import pl.edu.agh.geoxplore.service.IAuthenticationService;
+import pl.edu.agh.geoxplore.service.IAvatarService;
+import pl.edu.agh.geoxplore.service.IFriendService;
+import pl.edu.agh.geoxplore.service.IUserStatisticsService;
 import pl.edu.agh.geoxplore.service.impl.UserStatisticsService;
 
 import java.net.MalformedURLException;
@@ -25,16 +26,16 @@ import java.util.List;
 public class CommunityController {
 
     @Autowired
-    UserStatisticsService userStatisticsService;
+    IUserStatisticsService userStatisticsService;
 
     @Autowired
-    AvatarService avatarService;
+    IAvatarService avatarService;
 
     @Autowired
-    FriendService friendService;
+    IFriendService friendService;
 
     @Autowired
-    AuthenticationService authenticationService;
+    IAuthenticationService authenticationService;
 
     @GetMapping("/ranking")
     List<RankingUser> getRanking(Pageable pageable) {

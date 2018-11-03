@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.exception.application.UserExistsException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
-import pl.edu.agh.geoxplore.service.impl.UserManagementService;
+import pl.edu.agh.geoxplore.service.IUserManagementService;
 
 @RestController
 @RequestMapping("/user-management")
 public class UserManagementController {
 
     @Autowired
-    UserManagementService userManagementService;
+    IUserManagementService userManagementService;
 
     @PostMapping("/create-user")
     DefaultResponse add(@RequestBody ApplicationUser applicationUser) throws UserExistsException {

@@ -16,7 +16,7 @@ import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.Geolocation;
 import pl.edu.agh.geoxplore.rest.OpenedChest;
 import pl.edu.agh.geoxplore.rest.UserStatistics;
-import pl.edu.agh.geoxplore.service.impl.*;
+import pl.edu.agh.geoxplore.service.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -27,19 +27,19 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserStatisticsService userStatisticsService;
+    IUserStatisticsService userStatisticsService;
 
     @Autowired
-    ChestService chestService;
+    IChestService chestService;
 
     @Autowired
-    AvatarService avatarService;
+    IAvatarService avatarService;
 
     @Autowired
-    AuthenticationService authenticationService;
+    IAuthenticationService authenticationService;
 
     @Autowired
-    LocalizationService localizationService;
+    ILocalizationService localizationService;
 
     @PostMapping("/set-home")
     DefaultResponse home(@RequestBody HomeLocation homeLocation) {

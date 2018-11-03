@@ -13,6 +13,7 @@ import pl.edu.agh.geoxplore.repository.HomeLocationRepository;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.OpenedChest;
 import pl.edu.agh.geoxplore.service.IChestService;
+import pl.edu.agh.geoxplore.service.IUserStatisticsService;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -32,7 +33,7 @@ public class ChestService implements IChestService {
     ChestRepository chestRepository;
 
     @Autowired
-    UserStatisticsService userStatisticsService;
+    IUserStatisticsService userStatisticsService;
 
     @Autowired
     ApplicationUserRepository applicationUserRepository;

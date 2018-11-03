@@ -10,6 +10,7 @@ import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
 import pl.edu.agh.geoxplore.exception.application.UserDoesntExistsException;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
+import pl.edu.agh.geoxplore.service.IAuthenticationService;
 import pl.edu.agh.geoxplore.service.IAvatarService;
 
 import java.io.File;
@@ -25,7 +26,7 @@ public class AvatarService implements IAvatarService {
     ApplicationUserRepository applicationUserRepository;
 
     @Autowired
-    AuthenticationService authenticationService;
+    IAuthenticationService authenticationService;
 
     @Override
     public Resource getAvatarByUsername(String username) throws MalformedURLException, AvatarNotSetException, UserDoesntExistsException {

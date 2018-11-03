@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//todo add interface and impl to all services
 //FIXME this class begs for refactor and algorithms optimisation
 //todo move some code to localizaitonservice?
 @Service
@@ -97,7 +96,7 @@ public class ChestService implements IChestService {
 
     private long getChestLevel() {
         double roll = Math.random();
-        //todo fix magic numbers to non-mock
+        //todo b4release fix magic numbers to non-mock
         //0.6 0.9 0.975
         if(roll < 0.25) {
             return 1;
@@ -142,7 +141,7 @@ public class ChestService implements IChestService {
                 randomChest = new Chest(-1L, applicationUser, p.getLongitude(), p.getLatitude(), new Date(System.currentTimeMillis()), null, getChestLevel());
                 chestRepository.save(randomChest);
             }
-            //fixme remove mock for fronts
+            //todo b4release remove mock for fronts
             Chest c = new Chest(-1L, applicationUser, homeLocation.getLongitude() - 0.00024, homeLocation.getLatitude() - 0.00024, new Date(System.currentTimeMillis()), null, getChestLevel());
             chestRepository.save(c);
 

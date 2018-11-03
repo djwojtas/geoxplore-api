@@ -41,10 +41,15 @@ public class UserController {
     @Autowired
     ILocalizationService localizationService;
 
-    @PostMapping("/set-home")
-    DefaultResponse home(@RequestBody HomeLocation homeLocation) {
+    @PostMapping("/home")
+    DefaultResponse setHome(@RequestBody HomeLocation homeLocation) {
         localizationService.setHomeLocation(homeLocation, authenticationService.getAuthenticatedUser());
         return new DefaultResponse("success");
+    }
+
+    @GetMapping("/home")
+    public Geolocation getHome() throws HomeLocationNotSetException {
+        return localizationService.getHomeLocation(authenticationService.getAuthenticatedUser());
     }
 
     @GetMapping("/chests")
@@ -52,20 +57,14 @@ public class UserController {
         return chestService.getUserChests(authenticationService.getAuthenticatedUser());
     }
 
-    @GetMapping("/my-statistics")
-    UserStatistics getMyStatistics() {
+    @GetMapping("/statistics")
+    UserStatistics getStatistics() {
         return userStatisticsService.getUserStatistics(authenticationService.getAuthenticatedUser());
     }
 
-    @PostMapping("/open-chest/{id}")
+    @PostMapping("/chest/open/{id}")
     private OpenedChest openChest(@PathVariable(name = "id") Long id) {
         return chestService.openChest(authenticationService.getAuthenticatedUser(), id);
-    }
-
-    //todo change mappings to actually rest wihout get- set-
-    @GetMapping("/get-home")
-    public Geolocation getHomeLocation() throws HomeLocationNotSetException {
-        return localizationService.getHomeLocation(authenticationService.getAuthenticatedUser());
     }
 
     @PostMapping("/avatar")
@@ -74,10 +73,7 @@ public class UserController {
         return new DefaultResponse("success");
     }
 
-    @GetMapping(
-            value =  "/avatar",
-            produces = MediaType.IMAGE_PNG_VALUE
-    )
+    @GetMapping(value =  "/avatar", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<Resource> avatarDownload() throws MalformedURLException, AvatarNotSetException, UserDoesntExistsException {
         Resource avatar = avatarService.getAvatarByUsername(authenticationService.getAuthenticatedUser().getUsername());
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,

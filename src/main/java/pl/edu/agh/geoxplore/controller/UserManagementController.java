@@ -17,7 +17,7 @@ public class UserManagementController {
     @Autowired
     IUserManagementService userManagementService;
 
-    @PostMapping("/create-user")
+    @PostMapping("/user/create")
     DefaultResponse add(@RequestBody ApplicationUser applicationUser) throws UserExistsException {
         userManagementService.createUser(applicationUser);
         return new DefaultResponse("success");

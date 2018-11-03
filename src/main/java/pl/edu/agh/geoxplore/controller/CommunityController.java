@@ -42,12 +42,12 @@ public class CommunityController {
         return userStatisticsService.getRankingSortedAndPaged(pageable);
     }
 
-    @GetMapping("/get-friends")
+    @GetMapping("/friends")
     public List<RankingUser> getFriends() {
         return friendService.getFriends(authenticationService.getAuthenticatedUser());
     }
 
-    @PostMapping("/add-friend/{username}")
+    @PostMapping("/friend/add/{username}")
     public DefaultResponse addFriend(@PathVariable(name = "username") String username) throws FriendExistsException {
         friendService.addFriend(authenticationService.getAuthenticatedUser(), username);
         return new DefaultResponse("success");

@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.service;
+package pl.edu.agh.geoxplore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,7 @@ import pl.edu.agh.geoxplore.repository.ChestRepository;
 import pl.edu.agh.geoxplore.repository.HomeLocationRepository;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.OpenedChest;
+import pl.edu.agh.geoxplore.service.IChestService;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -23,7 +24,7 @@ import java.util.Optional;
 //FIXME this class begs for refactor and algorithms optimisation
 //todo move some code to localizaitonservice?
 @Service
-public class ChestService {
+public class ChestService implements IChestService {
     private final double LATITUDE_PER_KM = 0.00904371732957;
     private final double LONGITUDE_PER_KM = 0.00898311174991;
 
@@ -108,6 +109,7 @@ public class ChestService {
         }
     }
 
+    @Override
     public OpenedChest openChest(ApplicationUser applicationUser, Long id) {
         Optional<Chest> chest = chestRepository.findById(id);
         chest.get().setDateFound(new Timestamp(System.currentTimeMillis()));
@@ -126,6 +128,7 @@ public class ChestService {
         return response;
     }
 
+    @Override
     public List<ChestResponse> getUserChests(ApplicationUser applicationUser) {
         List<Chest> chests = chestRepository.findByUserAndDateCreated(applicationUser, new Date(System.currentTimeMillis()));
 

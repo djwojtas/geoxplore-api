@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.security.SecurityConstants;
-import pl.edu.agh.geoxplore.service.CustomUserDetailsService;
+import pl.edu.agh.geoxplore.service.impl.CustomUserDetailsService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

@@ -16,7 +16,7 @@ import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.Geolocation;
 import pl.edu.agh.geoxplore.rest.OpenedChest;
 import pl.edu.agh.geoxplore.rest.UserStatistics;
-import pl.edu.agh.geoxplore.service.*;
+import pl.edu.agh.geoxplore.service.impl.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

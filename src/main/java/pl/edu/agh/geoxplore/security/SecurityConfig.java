@@ -15,7 +15,7 @@ import org.springframework.security.web.session.SessionManagementFilter;
 import pl.edu.agh.geoxplore.security.filters.CorsFilter;
 import pl.edu.agh.geoxplore.security.filters.JWTAuthenticationFilter;
 import pl.edu.agh.geoxplore.security.filters.JWTAuthorizationFilter;
-import pl.edu.agh.geoxplore.service.CustomUserDetailsService;
+import pl.edu.agh.geoxplore.service.impl.CustomUserDetailsService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

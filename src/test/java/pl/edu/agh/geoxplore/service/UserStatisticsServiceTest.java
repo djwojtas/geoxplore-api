@@ -1,6 +1,7 @@
 package pl.edu.agh.geoxplore.service;
 
 import org.junit.jupiter.api.Test;
+import pl.edu.agh.geoxplore.service.impl.UserStatisticsService;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

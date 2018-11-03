@@ -1,0 +1,13 @@
+package pl.edu.agh.geoxplore.service;
+
+import pl.edu.agh.geoxplore.entity.ApplicationUser;
+import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
+import pl.edu.agh.geoxplore.rest.RankingUser;
+
+import java.util.List;
+
+public interface IFriendService {
+    void addFriend(ApplicationUser currentUser, String usernameToAddAsFriend) throws FriendExistsException;
+
+    List<RankingUser> getFriends(ApplicationUser applicationUser);
+}

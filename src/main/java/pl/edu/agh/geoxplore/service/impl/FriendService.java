@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.service;
+package pl.edu.agh.geoxplore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +9,7 @@ import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
 import pl.edu.agh.geoxplore.rest.RankingUser;
+import pl.edu.agh.geoxplore.service.IFriendService;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 //todo create interfaces for services
 @Service
-public class FriendService {
+public class FriendService implements IFriendService {
 
     @Autowired
     ApplicationUserRepository applicationUserRepository;
@@ -25,6 +26,7 @@ public class FriendService {
     @Autowired
     ChestRepository chestRepository;
 
+    @Override
     public void addFriend(ApplicationUser currentUser, String usernameToAddAsFriend) throws FriendExistsException {
         ApplicationUser friend = applicationUserRepository.findByUsername(usernameToAddAsFriend);
 
@@ -40,6 +42,7 @@ public class FriendService {
         applicationUserRepository.save(currentUser);
     }
 
+    @Override
     public List<RankingUser> getFriends(ApplicationUser applicationUser) {
         return applicationUser.getHaveFriends().stream()
                 .map(Friend::getFriend)

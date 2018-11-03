@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.exception.application.UserExistsException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
-import pl.edu.agh.geoxplore.service.UserManagementService;
+import pl.edu.agh.geoxplore.service.impl.UserManagementService;
 
 @RestController
 @RequestMapping("/user-management")

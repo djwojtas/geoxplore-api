@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.service;
+package pl.edu.agh.geoxplore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +11,7 @@ import pl.edu.agh.geoxplore.repository.FriendRepository;
 import pl.edu.agh.geoxplore.rest.ChestStats;
 import pl.edu.agh.geoxplore.rest.RankingUser;
 import pl.edu.agh.geoxplore.rest.UserStatistics;
+import pl.edu.agh.geoxplore.service.IUserStatisticsService;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserStatisticsService {
+public class UserStatisticsService implements IUserStatisticsService {
 
     @Autowired
     FriendRepository friendRepository;
@@ -32,6 +33,7 @@ public class UserStatisticsService {
     private static final double LEVEL_STEEPNESS = 1.5;
     private static final long LEVEL_EXP = 100;
 
+    @Override
     public UserStatistics getUserStatistics(ApplicationUser applicationUser) {
         List<Chest> chests = chestRepository.findByUserAndDateFoundIsNotNull(applicationUser);
 
@@ -67,6 +69,7 @@ public class UserStatisticsService {
     }
 
 
+    @Override
     public Long getLevelFromExp(Long exp) {
         return (long) Math.pow(((double)(exp + LEVEL_EXP)/(double)LEVEL_EXP), 2L/LEVEL_STEEPNESS);
     }
@@ -75,14 +78,17 @@ public class UserStatisticsService {
         return ((((double) exp)-calculateNeededExp(level))/(calculateNeededExp(level+1))) * 100;
     }
 
+    @Override
     public Long calculateNeededExp(Long level) {
         return (long) (Math.sqrt(Math.pow(level, LEVEL_STEEPNESS)) * LEVEL_EXP) - LEVEL_EXP;
     }
 
+    @Override
     public long calculateExpFromChest(Chest chest) {
         return chest.getValue() * 10;
     }
 
+    @Override
     public List<RankingUser> getRankingSortedAndPaged(Pageable pageable) {
         List<RankingUser> ranking = new ArrayList<>();
 

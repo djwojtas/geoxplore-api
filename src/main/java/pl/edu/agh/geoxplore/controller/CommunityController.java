@@ -12,10 +12,10 @@ import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
 import pl.edu.agh.geoxplore.exception.application.UserDoesntExistsException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.rest.RankingUser;
-import pl.edu.agh.geoxplore.service.AuthenticationService;
-import pl.edu.agh.geoxplore.service.AvatarService;
-import pl.edu.agh.geoxplore.service.FriendService;
-import pl.edu.agh.geoxplore.service.UserStatisticsService;
+import pl.edu.agh.geoxplore.service.impl.AuthenticationService;
+import pl.edu.agh.geoxplore.service.impl.AvatarService;
+import pl.edu.agh.geoxplore.service.impl.FriendService;
+import pl.edu.agh.geoxplore.service.impl.UserStatisticsService;
 
 import java.net.MalformedURLException;
 import java.util.List;

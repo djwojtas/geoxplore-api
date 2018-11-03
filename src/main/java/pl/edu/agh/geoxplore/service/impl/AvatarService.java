@@ -1,4 +1,4 @@
-package pl.edu.agh.geoxplore.service;
+package pl.edu.agh.geoxplore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -10,6 +10,7 @@ import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
 import pl.edu.agh.geoxplore.exception.application.UserDoesntExistsException;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
+import pl.edu.agh.geoxplore.service.IAvatarService;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class AvatarService {
+public class AvatarService implements IAvatarService {
 
     @Autowired
     ApplicationUserRepository applicationUserRepository;
@@ -26,6 +27,7 @@ public class AvatarService {
     @Autowired
     AuthenticationService authenticationService;
 
+    @Override
     public Resource getAvatarByUsername(String username) throws MalformedURLException, AvatarNotSetException, UserDoesntExistsException {
         if(applicationUserRepository.findByUsername(username) != null) {
             Path filePath = Paths.get("./avatars/" + username + ".png");
@@ -51,6 +53,7 @@ public class AvatarService {
 //    }
 
     //todo not much security here
+    @Override
     public void saveCurrentUserAvatar(MultipartFile file) throws IOException {
         ApplicationUser user = authenticationService.getAuthenticatedUser();
         File newFile = new File("./avatars/" + user.getUsername() + ".png");

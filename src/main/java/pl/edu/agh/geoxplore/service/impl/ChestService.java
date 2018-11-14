@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//FIXME this class begs for refactor and algorithms optimisation
-//todo move some code to localizaitonservice?
 @Service
 public class ChestService implements IChestService {
     private final double LATITUDE_PER_KM = 0.00904371732957;
@@ -51,23 +49,18 @@ public class ChestService implements IChestService {
         Point p;
         for (int i = 0; i < numberOfChests; ++i) {
             p = getRandomPointAround(lat, lon, radiusInKM);
-            if (!checkIfTooClose(p, pointList, distanceBetweenInM)) {
-                pointList.add(p);
-            } else {
-                --i;
+            while (checkIfTooClose(p, pointList, distanceBetweenInM)) {
+                p = getRandomPointAround(lat, lon, radiusInKM);
             }
+            pointList.add(p);
         }
 
         return pointList;
     }
 
     private boolean checkIfTooClose(Point testPoint, List<Point> testList, double distanceInM) {
-        for (Point p : testList) {
-            if (checkDistanceBetween(p.getLatitude(), p.getLongitude(), testPoint.getLatitude(), testPoint.getLongitude()) <= distanceInM) {
-                return true;
-            }
-        }
-        return false;
+        return testList.stream().anyMatch(point ->
+                checkDistanceBetween(point.getLatitude(), point.getLongitude(), testPoint.getLatitude(), testPoint.getLongitude()) <= distanceInM);
     }
 
     private Point getRandomPointAround(double latitude, double longitude, double distanceInKM) {
@@ -121,12 +114,7 @@ public class ChestService implements IChestService {
             chest.get().setDateFound(new Timestamp(System.currentTimeMillis()));
             chestRepository.save(chest.get());
 
-            //todo move to statistics service
             Long gainedExp = userStatisticsService.calculateExpFromChest(chest.get());
-            applicationUser.setExperience(applicationUser.getExperience() + gainedExp);
-            applicationUser.setLevel(userStatisticsService.getLevelFromExp(applicationUser.getExperience()));
-
-            applicationUserRepository.save(applicationUser);
 
             OpenedChest response = new OpenedChest();
             response.setExpGained(gainedExp);
@@ -144,16 +132,22 @@ public class ChestService implements IChestService {
             HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(applicationUser);
             List<Point> randomPoints = getRandomPointList(3, homeLocation.getLatitude(), homeLocation.getLongitude(), 60, 1);
 
-            Chest randomChest;
-            for (Point p : randomPoints) {
-                randomChest = new Chest(-1L, applicationUser, p.getLongitude(), p.getLatitude(), new Date(System.currentTimeMillis()), null, getChestLevel());
-                chestRepository.save(randomChest);
-            }
+            randomPoints.forEach(
+                    randomPoint -> chestRepository.save(
+                            Chest.builder()
+                            .id(-1L)
+                            .user(applicationUser)
+                            .longitude(randomPoint.getLongitude())
+                            .latitude(randomPoint.getLatitude())
+                            .dateCreated(new Date(System.currentTimeMillis()))
+                            .value(getChestLevel())
+                            .build())
+            );
+
             //todo b4release remove mock for fronts
             Chest c = new Chest(-1L, applicationUser, homeLocation.getLongitude() - 0.00024, homeLocation.getLatitude() - 0.00024, new Date(System.currentTimeMillis()), null, getChestLevel());
             chestRepository.save(c);
 
-            //todo change to local variable now go to sleep
             chests = chestRepository.findByUserAndDateCreated(applicationUser, new Date(System.currentTimeMillis()));
         }
 

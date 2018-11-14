@@ -18,4 +18,6 @@ public interface IUserStatisticsService {
     long calculateExpFromChest(Chest chest);
 
     List<RankingUser> getRankingSortedAndPaged(Pageable pageable);
+
+    Long gainExpFromChest(Chest chest, ApplicationUser applicationUser);
 }

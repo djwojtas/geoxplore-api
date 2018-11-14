@@ -115,4 +115,15 @@ public class UserStatisticsService implements IUserStatisticsService {
 
         return ranking;
     }
+
+    @Override
+    public Long gainExpFromChest(Chest chest, ApplicationUser applicationUser) {
+        Long gainedExp = calculateExpFromChest(chest);
+        applicationUser.setExperience(applicationUser.getExperience() + gainedExp);
+        applicationUser.setLevel(getLevelFromExp(applicationUser.getExperience()));
+
+        applicationUserRepository.save(applicationUser);
+
+        return gainedExp;
+    }
 }

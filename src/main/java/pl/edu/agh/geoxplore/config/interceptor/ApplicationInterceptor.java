@@ -68,6 +68,13 @@ public class ApplicationInterceptor {
                 HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(SearchStringTooShortException.class)
+    public ResponseEntity<ErrorResponse> handleSearchStringTooShortException() {
+        return new ResponseEntity<>(
+                new ErrorResponse("Search string too short", ApplicationError.SEARCH_STRING_TOO_SHORT.getErrorCode()),
+                HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(WrongPasswordException.class)
     public ResponseEntity<ErrorResponse> handleWrongPasswordException() {
         return new ResponseEntity<>(

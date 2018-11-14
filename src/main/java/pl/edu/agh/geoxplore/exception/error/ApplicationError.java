@@ -16,6 +16,7 @@ public enum ApplicationError {
     CHEST_ALREADY_OPENED("1006"),
     CHEST_DOES_NOT_EXISTS("1007"),
     WRONG_PASSWORD("1008"),
+    SEARCH_STRING_TOO_SHORT("1009"),
     //4xxx - various errors
     MALFORMED_REQUEST("4000");
 

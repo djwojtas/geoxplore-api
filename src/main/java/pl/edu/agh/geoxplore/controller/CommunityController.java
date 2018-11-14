@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
 import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
+import pl.edu.agh.geoxplore.exception.application.SearchStringTooShortException;
 import pl.edu.agh.geoxplore.exception.application.UserDoesNotExistException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.rest.RankingUser;
@@ -39,6 +40,11 @@ public class CommunityController {
     @GetMapping("/ranking")
     public List<RankingUser> getRanking(Pageable pageable) {
         return userStatisticsService.getRankingSortedAndPaged(pageable);
+    }
+
+    @GetMapping("/friend/find/{usernamePart}")
+    public List<String> searchFriends(@PathVariable(name = "usernamePart") String usernamePart) throws SearchStringTooShortException {
+        return friendService.searchFriend(usernamePart);
     }
 
     @GetMapping("/friends")

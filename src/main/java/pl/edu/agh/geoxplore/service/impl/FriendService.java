@@ -6,6 +6,7 @@ import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.entity.Friend;
 import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
+import pl.edu.agh.geoxplore.exception.application.SearchStringTooShortException;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
 import pl.edu.agh.geoxplore.rest.RankingUser;
@@ -46,6 +47,15 @@ public class FriendService implements IFriendService {
         return applicationUser.getHaveFriends().stream()
                 .map(Friend::getFriend)
                 .map(this::mapApplicationUserToRankingUser) //todo remove mock
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> searchFriend(String usernamePart) throws SearchStringTooShortException {
+        if(usernamePart.length() < 3) throw new SearchStringTooShortException();
+
+        return applicationUserRepository.findAllByUsernameContainingIgnoreCase(usernamePart).stream()
+                .map(ApplicationUser::getUsername)
                 .collect(Collectors.toList());
     }
 

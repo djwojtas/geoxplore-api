@@ -33,9 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(corsFilter(), SessionManagementFilter.class)
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/user-management/create-user").permitAll()
+                    .antMatchers("/user-management/user/create").permitAll()
                     .antMatchers("/community/avatar/{username}").permitAll() //todo secure it more like hash or smth
-                    .antMatchers("/user/open-chest/{id}")
+                    .antMatchers("/user/chest/open/{id}")
                         .access("hasRole('USER') and @guard.checkUserChestId(authentication,#id)")
                     .anyRequest().hasRole("USER")
                 .and()

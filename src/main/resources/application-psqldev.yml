@@ -10,7 +10,7 @@ spring:
       maximum-pool-size: 10
       connection-timeout: 300
       username: postgres
-      password:
+      password: postgres
   jpa:
     database: postgresql
     properties:

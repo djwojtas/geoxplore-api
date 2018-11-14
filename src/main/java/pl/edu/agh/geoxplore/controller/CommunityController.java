@@ -37,7 +37,7 @@ public class CommunityController {
     IAuthenticationService authenticationService;
 
     @GetMapping("/ranking")
-    List<RankingUser> getRanking(Pageable pageable) {
+    public List<RankingUser> getRanking(Pageable pageable) {
         return userStatisticsService.getRankingSortedAndPaged(pageable);
     }
 

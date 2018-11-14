@@ -68,6 +68,13 @@ public class ApplicationInterceptor {
                 HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(WrongPasswordException.class)
+    public ResponseEntity<ErrorResponse> handleWrongPasswordException() {
+        return new ResponseEntity<>(
+                new ErrorResponse("Wrong password", ApplicationError.WRONG_PASSWORD.getErrorCode()),
+                HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler({MalformedRequestException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<ErrorResponse> handleMalformedRequestException() {
         return new ResponseEntity<>(

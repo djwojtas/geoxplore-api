@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.edu.agh.geoxplore.entity.HomeLocation;
 import pl.edu.agh.geoxplore.exception.application.*;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
+import pl.edu.agh.geoxplore.rest.PasswordChange;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.Geolocation;
 import pl.edu.agh.geoxplore.rest.OpenedChest;
@@ -40,7 +41,7 @@ public class UserController {
     ILocalizationService localizationService;
 
     @PostMapping("/home")
-    DefaultResponse setHome(@RequestBody HomeLocation homeLocation) {
+    public DefaultResponse setHome(@RequestBody HomeLocation homeLocation) {
         localizationService.setHomeLocation(homeLocation, authenticationService.getAuthenticatedUser());
         return new DefaultResponse("success");
     }
@@ -51,12 +52,12 @@ public class UserController {
     }
 
     @GetMapping("/chests")
-    List<ChestResponse> getChests() {
+    public List<ChestResponse> getChests() {
         return chestService.getUserChests(authenticationService.getAuthenticatedUser());
     }
 
     @GetMapping("/statistics")
-    UserStatistics getStatistics() {
+    public UserStatistics getStatistics() {
         return userStatisticsService.getUserStatistics(authenticationService.getAuthenticatedUser());
     }
 

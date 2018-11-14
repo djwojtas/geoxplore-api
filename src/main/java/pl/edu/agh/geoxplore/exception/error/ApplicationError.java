@@ -15,6 +15,7 @@ public enum ApplicationError {
     USER_DOESNT_EXIST("1005"),
     CHEST_ALREADY_OPENED("1006"),
     CHEST_DOES_NOT_EXISTS("1007"),
+    WRONG_PASSWORD("1008"),
     //4xxx - various errors
     MALFORMED_REQUEST("4000");
 

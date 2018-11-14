@@ -7,6 +7,7 @@ import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.entity.HomeLocation;
 import pl.edu.agh.geoxplore.exception.application.ChestAlreadyOpenedException;
 import pl.edu.agh.geoxplore.exception.application.ChestDoesNotExistException;
+import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
 import pl.edu.agh.geoxplore.mapper.ChestMapper;
 import pl.edu.agh.geoxplore.model.Point;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
@@ -125,13 +126,17 @@ public class ChestService implements IChestService {
     }
 
     @Override
-    public List<ChestResponse> getUserChests(ApplicationUser applicationUser) {
+    public List<ChestResponse> getUserChests(ApplicationUser applicationUser) throws HomeLocationNotSetException {
         List<Chest> chests = chestRepository.findByUserAndDateCreated(applicationUser, new Date(System.currentTimeMillis()));
 
         if(chests.size() == 0) {
-            HomeLocation homeLocation = homeLocationRepository.findFirstByUserOrderByDateAddedDesc(applicationUser);
-            List<Point> randomPoints = getRandomPointList(3, homeLocation.getLatitude(), homeLocation.getLongitude(), 60, 1);
+            Optional<HomeLocation> optionalHomeLocation
+                    = Optional.ofNullable(homeLocationRepository.findFirstByUserOrderByDateAddedDesc(applicationUser));
 
+            if(!optionalHomeLocation.isPresent()) throw new HomeLocationNotSetException();
+
+            HomeLocation homeLocation = optionalHomeLocation.get();
+            List<Point> randomPoints = getRandomPointList(3, homeLocation.getLatitude(), homeLocation.getLongitude(), 60, 1);
             randomPoints.forEach(
                     randomPoint -> chestRepository.save(
                             Chest.builder()

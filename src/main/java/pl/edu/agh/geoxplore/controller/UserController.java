@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/chests")
-    public List<ChestResponse> getChests() {
+    public List<ChestResponse> getChests() throws HomeLocationNotSetException {
         return chestService.getUserChests(authenticationService.getAuthenticatedUser());
     }
 

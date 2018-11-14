@@ -23,8 +23,8 @@ public class ApplicationInterceptor {
                 HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(UserDoesntExistsException.class)
-    public ResponseEntity<ErrorResponse> handleUserDoesntExistsException() {
+    @ExceptionHandler(UserDoesNotExistException.class)
+    public ResponseEntity<ErrorResponse> handleUserDoesNotExistException() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(
@@ -52,6 +52,20 @@ public class ApplicationInterceptor {
         return new ResponseEntity<>(
                 new ErrorResponse("Username already exists", ApplicationError.USERNAME_EXISTS.getErrorCode()),
                 HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ChestAlreadyOpenedException.class)
+    public ResponseEntity<ErrorResponse> handleChestAlreadyOpenedException() {
+        return new ResponseEntity<>(
+                new ErrorResponse("Chest is already opened", ApplicationError.CHEST_ALREADY_OPENED.getErrorCode()),
+                HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(ChestDoesNotExistException.class)
+    public ResponseEntity<ErrorResponse> handleChestDoesNotExistException() {
+        return new ResponseEntity<>(
+                new ErrorResponse("Chest not found", ApplicationError.CHEST_DOES_NOT_EXISTS.getErrorCode()),
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({MalformedRequestException.class, HttpMessageNotReadableException.class})

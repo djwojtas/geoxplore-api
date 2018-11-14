@@ -8,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.edu.agh.geoxplore.entity.HomeLocation;
-import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
-import pl.edu.agh.geoxplore.exception.application.HomeLocationNotSetException;
-import pl.edu.agh.geoxplore.exception.application.UserDoesntExistsException;
+import pl.edu.agh.geoxplore.exception.application.*;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.Geolocation;
@@ -63,7 +61,7 @@ public class UserController {
     }
 
     @PostMapping("/chest/open/{id}")
-    private OpenedChest openChest(@PathVariable(name = "id") Long id) {
+    private OpenedChest openChest(@PathVariable(name = "id") Long id) throws ChestDoesNotExistException, ChestAlreadyOpenedException {
         return chestService.openChest(authenticationService.getAuthenticatedUser(), id);
     }
 
@@ -74,7 +72,7 @@ public class UserController {
     }
 
     @GetMapping(value =  "/avatar", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<Resource> avatarDownload() throws MalformedURLException, AvatarNotSetException, UserDoesntExistsException {
+    public ResponseEntity<Resource> avatarDownload() throws MalformedURLException, AvatarNotSetException, UserDoesNotExistException {
         Resource avatar = avatarService.getAvatarByUsername(authenticationService.getAuthenticatedUser().getUsername());
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + avatar.getFilename() + "\"").body(avatar);

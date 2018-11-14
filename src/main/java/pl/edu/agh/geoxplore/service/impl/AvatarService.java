@@ -8,7 +8,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
-import pl.edu.agh.geoxplore.exception.application.UserDoesntExistsException;
+import pl.edu.agh.geoxplore.exception.application.UserDoesNotExistException;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.service.IAuthenticationService;
 import pl.edu.agh.geoxplore.service.IAvatarService;
@@ -29,7 +29,7 @@ public class AvatarService implements IAvatarService {
     IAuthenticationService authenticationService;
 
     @Override
-    public Resource getAvatarByUsername(String username) throws MalformedURLException, AvatarNotSetException, UserDoesntExistsException {
+    public Resource getAvatarByUsername(String username) throws MalformedURLException, AvatarNotSetException, UserDoesNotExistException {
         if(applicationUserRepository.findByUsername(username) != null) {
             Path filePath = Paths.get("./avatars/" + username + ".png");
             Resource resource = new UrlResource(filePath.toUri());
@@ -38,7 +38,7 @@ public class AvatarService implements IAvatarService {
             } else {
                 throw new AvatarNotSetException();
             }
-        } else throw new UserDoesntExistsException();
+        } else throw new UserDoesNotExistException();
     }
 
 //    public Resource getCurrentUserAvatar() throws MalformedURLException, AvatarNotSetException {

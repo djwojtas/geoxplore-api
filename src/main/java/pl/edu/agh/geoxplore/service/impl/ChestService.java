@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
 import pl.edu.agh.geoxplore.entity.HomeLocation;
+import pl.edu.agh.geoxplore.exception.application.ChestAlreadyOpenedException;
+import pl.edu.agh.geoxplore.exception.application.ChestDoesNotExistException;
 import pl.edu.agh.geoxplore.mapper.ChestMapper;
 import pl.edu.agh.geoxplore.model.Point;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
@@ -110,22 +112,28 @@ public class ChestService implements IChestService {
     }
 
     @Override
-    public OpenedChest openChest(ApplicationUser applicationUser, Long id) {
+    public OpenedChest openChest(ApplicationUser applicationUser, Long id) throws ChestDoesNotExistException, ChestAlreadyOpenedException {
         Optional<Chest> chest = chestRepository.findById(id);
-        chest.get().setDateFound(new Timestamp(System.currentTimeMillis()));
-        chestRepository.save(chest.get()); //todo make sure that chest can only by opened once
 
-        //todo move generating exp somewhere else?
-        Long gainedExp = userStatisticsService.calculateExpFromChest(chest.get());
-        applicationUser.setExperience(applicationUser.getExperience() + gainedExp);
-        applicationUser.setLevel(userStatisticsService.getLevelFromExp(applicationUser.getExperience()));
+        if(chest.isPresent()) {
+            if(chest.get().getDateFound() != null) throw new ChestAlreadyOpenedException();
 
-        applicationUserRepository.save(applicationUser);
+            chest.get().setDateFound(new Timestamp(System.currentTimeMillis()));
+            chestRepository.save(chest.get());
 
-        OpenedChest response = new OpenedChest();
-        response.setExpGained(gainedExp);
+            //todo move to statistics service
+            Long gainedExp = userStatisticsService.calculateExpFromChest(chest.get());
+            applicationUser.setExperience(applicationUser.getExperience() + gainedExp);
+            applicationUser.setLevel(userStatisticsService.getLevelFromExp(applicationUser.getExperience()));
 
-        return response;
+            applicationUserRepository.save(applicationUser);
+
+            OpenedChest response = new OpenedChest();
+            response.setExpGained(gainedExp);
+            return response;
+        } else {
+            throw new ChestDoesNotExistException();
+        }
     }
 
     @Override

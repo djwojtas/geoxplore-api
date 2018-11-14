@@ -9,14 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
 import pl.edu.agh.geoxplore.exception.application.FriendExistsException;
-import pl.edu.agh.geoxplore.exception.application.UserDoesntExistsException;
+import pl.edu.agh.geoxplore.exception.application.UserDoesNotExistException;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.rest.RankingUser;
 import pl.edu.agh.geoxplore.service.IAuthenticationService;
 import pl.edu.agh.geoxplore.service.IAvatarService;
 import pl.edu.agh.geoxplore.service.IFriendService;
 import pl.edu.agh.geoxplore.service.IUserStatisticsService;
-import pl.edu.agh.geoxplore.service.impl.UserStatisticsService;
 
 import java.net.MalformedURLException;
 import java.util.List;
@@ -57,7 +56,7 @@ public class CommunityController {
             value =  "/avatar/{username}",
             produces = MediaType.IMAGE_PNG_VALUE
     )
-    public ResponseEntity<Resource> avatarDownload(@PathVariable("username") String username) throws UserDoesntExistsException, AvatarNotSetException, MalformedURLException {
+    public ResponseEntity<Resource> avatarDownload(@PathVariable("username") String username) throws UserDoesNotExistException, AvatarNotSetException, MalformedURLException {
         Resource avatar = avatarService.getAvatarByUsername(username);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + avatar.getFilename() + "\"").body(avatar);

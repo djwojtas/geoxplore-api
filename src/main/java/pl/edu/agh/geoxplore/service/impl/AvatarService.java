@@ -53,7 +53,7 @@ public class AvatarService implements IAvatarService {
 //        }
 //    }
 
-    //todo not much security here
+    //todo not much security here (milestone 2)
     @Override
     public void saveCurrentUserAvatar(MultipartFile file) throws IOException {
         ApplicationUser user = authenticationService.getAuthenticatedUser();

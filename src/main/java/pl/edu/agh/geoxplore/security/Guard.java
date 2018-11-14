@@ -12,9 +12,6 @@ import pl.edu.agh.geoxplore.repository.ChestRepository;
 public class Guard {
 
     @Autowired
-    private ApplicationUserRepository applicationUserRepository;
-
-    @Autowired
     private ChestRepository chestRepository;
 
     public boolean checkUserChestId(Authentication authentication, int id) {

@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                     .antMatchers("/user-management/user/create").permitAll()
-                    .antMatchers("/community/avatar/{username}").permitAll() //todo secure it more like hash or smth
+                    .antMatchers("/community/avatar/{username}").permitAll() //todo secure it more like hash or smth (milestone 2)
                     .antMatchers("/user/chest/open/{id}")
                         .access("hasRole('USER') and @guard.checkUserChestId(authentication,#id)")
                     .anyRequest().hasRole("USER")

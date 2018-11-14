@@ -11,6 +11,6 @@ import java.net.MalformedURLException;
 public interface IAvatarService {
     Resource getAvatarByUsername(String username) throws MalformedURLException, AvatarNotSetException, UserDoesNotExistException;
 
-    //todo not much security here
+    //todo not much security here (milestone 2)
     void saveCurrentUserAvatar(MultipartFile file) throws IOException;
 }

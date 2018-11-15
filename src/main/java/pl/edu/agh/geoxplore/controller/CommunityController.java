@@ -48,8 +48,8 @@ public class CommunityController {
     }
 
     @GetMapping("/friends")
-    public List<RankingUser> getFriends() {
-        return friendService.getFriends(authenticationService.getAuthenticatedUser());
+    public List<RankingUser> getFriends(Pageable pageable) {
+        return friendService.getFriends(authenticationService.getAuthenticatedUser(), pageable);
     }
 
     @PostMapping("/friend/add/{username}")

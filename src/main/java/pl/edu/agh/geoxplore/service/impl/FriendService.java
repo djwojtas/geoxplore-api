@@ -1,6 +1,7 @@
 package pl.edu.agh.geoxplore.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
@@ -30,7 +31,8 @@ public class FriendService implements IFriendService {
     public void addFriend(ApplicationUser currentUser, String usernameToAddAsFriend) throws FriendExistsException {
         ApplicationUser friend = applicationUserRepository.findByUsername(usernameToAddAsFriend);
 
-        if(currentUser.getHaveFriends().stream().anyMatch(f -> f.getFriend().getId().equals(friend.getId()))) {
+        if(currentUser.getHaveFriends().stream()
+                .anyMatch(f -> f.getFriend().getId().equals(friend.getId()))) {
             throw new FriendExistsException();
         }
 
@@ -43,11 +45,15 @@ public class FriendService implements IFriendService {
     }
 
     @Override
-    public List<RankingUser> getFriends(ApplicationUser applicationUser) {
-        return applicationUser.getHaveFriends().stream()
-                .map(Friend::getFriend)
-                .map(this::mapApplicationUserToRankingUser) //todo remove mock
+    public List<RankingUser> getFriends(ApplicationUser applicationUser, Pageable pageable) {
+        return applicationUserRepository.findAllFriends(applicationUser.getId(), pageable).stream()
+                .map(this::mapApplicationUserToRankingUser)
                 .collect(Collectors.toList());
+
+//        return applicationUser.getHaveFriends().stream()
+//                .map(Friend::getFriend)
+//                .map(this::mapApplicationUserToRankingUser)
+//                .collect(Collectors.toList());
     }
 
     @Override
@@ -62,17 +68,14 @@ public class FriendService implements IFriendService {
     private RankingUser mapApplicationUserToRankingUser(ApplicationUser user) {
         List<Chest> chests = chestRepository.findByUserAndDateFoundIsNotNull(user);
 
-        RankingUser rankingUser = new RankingUser();
-        rankingUser.setUsername(user.getUsername());
-        rankingUser.setLevel(user.getLevel());
-        rankingUser.setOpenedChests((long) chests.size());
-        rankingUser.setLastWeekChests(
-                chests.stream()
-                        .filter(c -> c.getDateFound().after(
+        return RankingUser.builder()
+                .username(user.getUsername())
+                .level(user.getLevel())
+                .openedChests((long) chests.size())
+                .lastWeekChests(chests.stream()
+                        .filter(chest -> chest.getDateFound().after(
                                 Timestamp.valueOf(LocalDate.now().minusDays(7).atStartOfDay()))
-                        ).count()
-        );
-
-        return rankingUser;
+                        ).count())
+                .build();
     }
 }

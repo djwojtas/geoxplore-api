@@ -56,6 +56,7 @@ public class UserControllerTest {
 
     @Before
     public void addUser() {
+        applicationUserRepository.deleteAll();
         applicationUserRepository.save(ApplicationUser.builder()
                 .email("test@test.com")
                 .experience(0L)

@@ -44,6 +44,7 @@ public class UserManagementControllerTest { //todo test password change
 
     @Test
     public void shouldCreateUserForGivenData() throws Exception {
+        applicationUserRepository.deleteAll();
         Gson gson = new Gson();
         String json = gson.toJson(CreateUserRequestStub.builder()
                 .username("test1234")

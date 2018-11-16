@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.edu.agh.geoxplore.entity.HomeLocation;
 import pl.edu.agh.geoxplore.exception.application.*;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
-import pl.edu.agh.geoxplore.rest.PasswordChange;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
 import pl.edu.agh.geoxplore.rest.Geolocation;
 import pl.edu.agh.geoxplore.rest.OpenedChest;

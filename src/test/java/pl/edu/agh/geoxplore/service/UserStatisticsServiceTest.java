@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UserStatisticsServiceTest {
 
-    UserStatisticsService service = new UserStatisticsService();
+    private UserStatisticsService service = new UserStatisticsService();
 
     @Test
     void shouldExpectMoreExpForHigherLevel() {

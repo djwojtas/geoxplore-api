@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class UserStatisticsService implements IUserStatisticsService {
@@ -30,7 +31,7 @@ public class UserStatisticsService implements IUserStatisticsService {
     @Autowired
     ApplicationUserRepository applicationUserRepository;
 
-    private static final double LEVEL_STEEPNESS = 1.5;
+    private static final double LEVEL_STEEPNESS = 2;
     private static final long LEVEL_EXP = 100;
 
     @Override
@@ -41,7 +42,7 @@ public class UserStatisticsService implements IUserStatisticsService {
         userStatistics.setUsername(applicationUser.getUsername());
         userStatistics.setExperience(applicationUser.getExperience());
         userStatistics.setLevel(applicationUser.getLevel());
-        userStatistics.setToNextLevel(calculateLevelProcent(applicationUser.getExperience(), applicationUser.getLevel()));
+        userStatistics.setToNextLevel(calculateLevelPercent(applicationUser.getExperience(), applicationUser.getLevel()));
         userStatistics.setFriends((long) applicationUser.getHaveFriends().size());
         userStatistics.setOpenedOverallChests((long) chests.size());
 
@@ -71,10 +72,10 @@ public class UserStatisticsService implements IUserStatisticsService {
 
     @Override
     public Long getLevelFromExp(Long exp) {
-        return (long) Math.pow(((double)(exp + LEVEL_EXP)/(double)LEVEL_EXP), 2L/LEVEL_STEEPNESS);
+        return (long) Math.pow(((double)(exp + LEVEL_EXP)/(double)LEVEL_EXP), 1.0/LEVEL_STEEPNESS);
     }
 
-    private Double calculateLevelProcent(Long exp, Long level) {
+    private Double calculateLevelPercent(Long exp, Long level) {
         return ((((double) exp)-calculateNeededExp(level))/(calculateNeededExp(level+1))) * 100;
     }
 
@@ -85,7 +86,7 @@ public class UserStatisticsService implements IUserStatisticsService {
 
     @Override
     public long calculateExpFromChest(Chest chest) {
-        return chest.getValue() * 10;
+        return (long) (chest.getValue() * 10 * ((new Random()).nextDouble() + 0.5));
     }
 
     @Override

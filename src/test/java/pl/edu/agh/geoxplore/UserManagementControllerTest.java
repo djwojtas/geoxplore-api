@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AppTestConfig.class)
 @AutoConfigureMockMvc
-public class UserManagementControllerTest { //todo test password change
+public class UserManagementControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

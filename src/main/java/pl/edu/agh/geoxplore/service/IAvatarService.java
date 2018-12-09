@@ -6,11 +6,9 @@ import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
 import pl.edu.agh.geoxplore.exception.application.UserDoesNotExistException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 public interface IAvatarService {
-    Resource getAvatarByUsername(String username) throws MalformedURLException, AvatarNotSetException, UserDoesNotExistException;
+    Resource getAvatarByUsername(String username) throws AvatarNotSetException, UserDoesNotExistException;
 
-    //todo not much security here (milestone 2)
     void saveCurrentUserAvatar(MultipartFile file) throws IOException;
 }

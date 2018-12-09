@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pl.edu.agh.geoxplore.exception.application.*;
@@ -52,6 +53,13 @@ public class ApplicationInterceptor {
         return new ResponseEntity<>(
                 new ErrorResponse("Username already exists", ApplicationError.USERNAME_EXISTS.getErrorCode()),
                 HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUsernameNotFoundException() {
+        return new ResponseEntity<>(
+                new ErrorResponse("Username does not exist", ApplicationError.USER_DOESNT_EXIST.getErrorCode()),
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ChestAlreadyOpenedException.class)

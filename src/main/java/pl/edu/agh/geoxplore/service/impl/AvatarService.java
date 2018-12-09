@@ -1,23 +1,22 @@
 package pl.edu.agh.geoxplore.service.impl;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.exception.application.AvatarNotSetException;
 import pl.edu.agh.geoxplore.exception.application.UserDoesNotExistException;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
+import pl.edu.agh.geoxplore.security.SecurityConstants;
 import pl.edu.agh.geoxplore.service.IAuthenticationService;
 import pl.edu.agh.geoxplore.service.IAvatarService;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class AvatarService implements IAvatarService {
@@ -28,37 +27,34 @@ public class AvatarService implements IAvatarService {
     @Autowired
     IAuthenticationService authenticationService;
 
+    @Autowired
+    AmazonS3 s3Client;
+
     @Override
-    public Resource getAvatarByUsername(String username) throws MalformedURLException, AvatarNotSetException, UserDoesNotExistException {
-        if(applicationUserRepository.findByUsername(username) != null) {
-            Path filePath = Paths.get("./avatars/" + username + ".png");
-            Resource resource = new UrlResource(filePath.toUri());
-            if(resource.exists()) {
-                return resource;
+    public Resource getAvatarByUsername(String username) throws AvatarNotSetException, UserDoesNotExistException {
+        String filePath = String.format("avatars/%s.png", username);
+        if (applicationUserRepository.findByUsername(username) != null) {
+            if (s3Client.doesObjectExist(SecurityConstants.AWSBucketName, filePath)) {
+                S3Object object = s3Client.getObject(new GetObjectRequest(SecurityConstants.AWSBucketName, filePath));
+                return new InputStreamResource(object.getObjectContent());
             } else {
                 throw new AvatarNotSetException();
             }
         } else throw new UserDoesNotExistException();
     }
 
-//    public Resource getCurrentUserAvatar() throws MalformedURLException, AvatarNotSetException {
-//        ApplicationUser user = authenticationService.getAuthenticatedUser();
-//
-//        Path filePath = Paths.get("./avatars/" + user.getUsername() + ".png");
-//        Resource resource = new UrlResource(filePath.toUri());
-//        if(resource.exists()) {
-//            return resource;
-//        } else {
-//            throw new AvatarNotSetException();
-//        }
-//    }
-
-    //todo not much security here (milestone 2)
     @Override
     public void saveCurrentUserAvatar(MultipartFile file) throws IOException {
-        ApplicationUser user = authenticationService.getAuthenticatedUser();
-        File newFile = new File("./avatars/" + user.getUsername() + ".png");
-        newFile.getParentFile().mkdirs();
-        FileCopyUtils.copy(file.getBytes(), newFile);
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType("image/png");
+        objectMetadata.setContentLength(file.getSize());
+
+        String filePath = String.format("avatars/%s.png", authenticationService.getAuthenticatedUser().getUsername());
+        s3Client.putObject(
+                SecurityConstants.AWSBucketName,
+                filePath,
+                file.getInputStream(),
+                objectMetadata
+        );
     }
 }

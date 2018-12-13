@@ -86,8 +86,8 @@ public class UserController {
     }
 
     @PutMapping(value = "/title")
-    public DefaultResponse updateTitle(String title) { //todo refactor to service
-        userStatisticsService.updateTitle(title, authenticationService.getAuthenticatedUser());
+    public DefaultResponse updateTitle(@RequestBody Title title) { //todo refactor to service
+        userStatisticsService.updateTitle(title.getTitle(), authenticationService.getAuthenticatedUser());
         return new DefaultResponse("success");
     }
 }

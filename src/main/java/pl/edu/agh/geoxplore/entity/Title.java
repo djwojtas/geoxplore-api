@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 
 //@NoArgsConstructor
 //@AllArgsConstructor
-//@Getter
-//@Setter
+@Getter
+@Setter
 //@Entity
 //@Builder
 //@Table(name = "titles")
@@ -27,5 +27,5 @@ public class Title { //todo create rest objects for all entities
 //    @JsonIgnore
 //    private ApplicationUser user;
 //
-//    private String title;
+    private String title;
 }

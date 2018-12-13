@@ -14,5 +14,7 @@ public class RankingUser {
     private Long level;
     private Long openedChests;
     private Long lastWeekChests;
+    private String title;
     private Long place;
+    private String[] achievements = {"10 skrzynek", "100 skrzynek", "30 dni z rzędu", "30 legendarnych skrzynek"};
 }

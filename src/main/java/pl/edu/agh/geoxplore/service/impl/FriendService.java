@@ -76,6 +76,8 @@ public class FriendService implements IFriendService {
                         .filter(chest -> chest.getDateFound().after(
                                 Timestamp.valueOf(LocalDate.now().minusDays(7).atStartOfDay()))
                         ).count())
+                .title(user.getTitle()) //todo
+                .achievements(new String[] {"10 skrzynek", "100 skrzynek", "30 dni z rzędu", "30 legendarnych skrzynek"})
                 .build();
     }
 }

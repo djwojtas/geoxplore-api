@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.edu.agh.geoxplore.entity.ApplicationUser;
 import pl.edu.agh.geoxplore.entity.Chest;
+import pl.edu.agh.geoxplore.entity.Title;
 import pl.edu.agh.geoxplore.repository.ApplicationUserRepository;
 import pl.edu.agh.geoxplore.repository.ChestRepository;
 import pl.edu.agh.geoxplore.repository.FriendRepository;
@@ -45,6 +46,8 @@ public class UserStatisticsService implements IUserStatisticsService {
         userStatistics.setToNextLevel(calculateLevelPercent(applicationUser.getExperience(), applicationUser.getLevel()));
         userStatistics.setFriends((long) applicationUser.getHaveFriends().size());
         userStatistics.setOpenedOverallChests((long) chests.size());
+        userStatistics.setTitle(applicationUser.getTitle());
+        userStatistics.setAchievements(new String[] {"10 skrzynek", "100 skrzynek", "30 dni z rzędu", "30 legendarnych skrzynek"});
 
         ChestStats chestStats = new ChestStats();
         chestStats.setOpenedOverallCommonChests(
@@ -108,7 +111,9 @@ public class UserStatisticsService implements IUserStatisticsService {
                     userChests.stream()
                             .filter(c -> c.getDateFound().after(
                                     Timestamp.valueOf(LocalDate.now().minusDays(7).atStartOfDay()))).count(),
-                    (long) startingPlace + currentPlace
+                    applicationUser.getTitle(),
+                    (long) startingPlace + currentPlace,
+                    new String[] {"10 skrzynek", "100 skrzynek", "30 dni z rzędu", "30 legendarnych skrzynek"}
             ));
 
             ++currentPlace;
@@ -126,5 +131,12 @@ public class UserStatisticsService implements IUserStatisticsService {
         applicationUserRepository.save(applicationUser);
 
         return gainedExp;
+    }
+
+    @Override
+    public void updateTitle(String title, ApplicationUser authenticatedUser) {
+        ApplicationUser user = applicationUserRepository.findByUsername(authenticatedUser.getUsername());
+        user.setTitle(title);
+        applicationUserRepository.save(user);
     }
 }

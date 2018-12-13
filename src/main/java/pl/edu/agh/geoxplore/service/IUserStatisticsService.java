@@ -20,4 +20,6 @@ public interface IUserStatisticsService {
     List<RankingUser> getRankingSortedAndPaged(Pageable pageable);
 
     Long gainExpFromChest(Chest chest, ApplicationUser applicationUser);
+
+    void updateTitle(String title, ApplicationUser authenticatedUser);
 }

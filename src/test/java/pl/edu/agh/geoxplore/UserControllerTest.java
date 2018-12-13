@@ -63,6 +63,7 @@ public class UserControllerTest {
                 .level(0L)
                 .password(passwordEncoder.encode("password123"))
                 .username("test1234")
+                .title("Początkujący")
                 .build());
 
         authorizationHeader = SecurityConstants.TOKEN_PREFIX + Jwts.builder().setSubject("test1234")

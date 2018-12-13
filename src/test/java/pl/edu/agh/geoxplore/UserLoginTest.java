@@ -53,6 +53,7 @@ public class UserLoginTest {
                 .level(0L)
                 .password(passwordEncoder.encode("password123"))
                 .username("test1234")
+                .title("Początkujący")
                 .build());
     }
 

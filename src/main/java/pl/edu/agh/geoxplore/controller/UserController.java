@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.edu.agh.geoxplore.entity.HomeLocation;
+import pl.edu.agh.geoxplore.entity.Title;
 import pl.edu.agh.geoxplore.exception.application.*;
 import pl.edu.agh.geoxplore.message.DefaultResponse;
 import pl.edu.agh.geoxplore.rest.ChestResponse;
@@ -18,6 +19,7 @@ import pl.edu.agh.geoxplore.service.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -76,6 +78,17 @@ public class UserController {
         Resource avatar = avatarService.getAvatarByUsername(authenticationService.getAuthenticatedUser().getUsername());
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + avatar.getFilename() + "\"").body(avatar);
+    }
+
+    @GetMapping(value = "/titles")
+    public List<String> getTitles() {
+        return Arrays.asList("Legendarny zbieracz", "Stały bywalec", "Wytrwały");
+    }
+
+    @PutMapping(value = "/title")
+    public DefaultResponse updateTitle(String title) { //todo refactor to service
+        userStatisticsService.updateTitle(title, authenticationService.getAuthenticatedUser());
+        return new DefaultResponse("success");
     }
 }
 

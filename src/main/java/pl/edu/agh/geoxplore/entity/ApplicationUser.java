@@ -44,6 +44,10 @@ public class ApplicationUser {
     @NotNull
     private Long experience;
 
+    @Column(name = "title")
+    @NotNull
+    private String title;
+
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="user")
     private List<HomeLocation> homeLocations;
 

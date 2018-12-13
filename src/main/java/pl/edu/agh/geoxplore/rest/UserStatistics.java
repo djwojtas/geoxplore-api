@@ -15,4 +15,6 @@ public class UserStatistics {
     private Long friends;
     private Long openedOverallChests;
     private ChestStats chestStats;
+    private String title;
+    private String[] achievements = {"10 skrzynek", "100 skrzynek", "30 dni z rzędu", "30 legendarnych skrzynek"};
 }

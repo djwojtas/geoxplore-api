@@ -30,6 +30,7 @@ public class UserManagementService implements IUserManagementService {
         applicationUser.setPassword(passwordEncoder.encode(applicationUser.getPassword()));
         applicationUser.setExperience(0L);
         applicationUser.setLevel(1L);
+        applicationUser.setTitle("Początkujący");
         applicationUserRepository.save(applicationUser);
     }
 

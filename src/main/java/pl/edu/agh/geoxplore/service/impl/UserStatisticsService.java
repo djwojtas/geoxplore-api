@@ -81,7 +81,7 @@ public class UserStatisticsService implements IUserStatisticsService {
 
     @Override
     public Long calculateNeededExp(Long level) {
-        return (long) (Math.sqrt(Math.pow(level, LEVEL_STEEPNESS)) * LEVEL_EXP) - LEVEL_EXP;
+        return (long) (Math.pow(level, LEVEL_STEEPNESS) * LEVEL_EXP) - LEVEL_EXP;
     }
 
     @Override

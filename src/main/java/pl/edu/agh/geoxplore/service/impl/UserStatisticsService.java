@@ -89,7 +89,7 @@ public class UserStatisticsService implements IUserStatisticsService {
 
     @Override
     public long calculateExpFromChest(Chest chest) {
-        return (long) (chest.getValue() * 10 * ((new Random()).nextDouble() + 0.5));
+        return (long) (((double) chest.getValue()) * 10.0 * ((new Random()).nextDouble() + 0.5));
     }
 
     @Override
